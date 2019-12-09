@@ -109,7 +109,8 @@ public class LineBotController {
                                 this.reply(replyToken, Arrays.asList(
                                         new TextMessage("Display name: " + profile.getDisplayName()),
                                         new TextMessage("Status message: " + profile.getStatusMessage()),
-                                        new TextMessage("User ID: " + profile.getUserId())
+                                        new TextMessage("User ID: " + profile.getUserId()),
+                                        new TextMessage("User ID: " + profile.getPictureUrl())
                                 ));
                             });
                 }
