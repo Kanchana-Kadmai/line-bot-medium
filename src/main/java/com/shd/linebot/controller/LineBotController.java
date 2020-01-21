@@ -94,11 +94,13 @@ public class LineBotController {
 
     private void handleTextContent(String replyToken, Event event, TextMessageContent content) {
         UserLog userLog = userMap.get(event.getSource().getSenderId());
+        log.info("Return echo message %s : %s", replyToken, userLog);
         if (userLog == null) {
             userLog = new UserLog(event.getSource().getSenderId(), status.DEFAULT);
             userMap.put(event.getSource().getSenderId(), userLog);
         }
 
+        log.info("Return status bot : %s", userLog.getStatusBot());
         String text = content.getText();
 
         if (userLog.getStatusBot().equals(status.DEFAULT)) {
