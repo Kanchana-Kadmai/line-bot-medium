@@ -34,7 +34,7 @@ $ mvn spring-boot:run
 
 ........
 
-INFO 35569 --- [main] com.iphayao.linebot.Application   : Started Application in 4.393 seconds (JVM running for 9.056)
+INFO 35569 --- [main] com.shd.linebot.Application   : Started Application in 4.393 seconds (JVM running for 9.056)
 ```
 
 # Done! 完了

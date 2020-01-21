@@ -1,8 +1,9 @@
-package com.iphayao.linebot;
+package com.shd.linebot.controller;
 
 import com.google.common.io.ByteStreams;
 import com.linecorp.bot.client.LineMessagingClient;
 import com.linecorp.bot.client.MessageContentResponse;
+import com.linecorp.bot.model.PushMessage;
 import com.linecorp.bot.model.ReplyMessage;
 import com.linecorp.bot.model.event.Event;
 import com.linecorp.bot.model.event.MessageEvent;
@@ -14,6 +15,9 @@ import com.linecorp.bot.model.message.*;
 import com.linecorp.bot.model.response.BotApiResponse;
 import com.linecorp.bot.spring.boot.annotation.EventMapping;
 import com.linecorp.bot.spring.boot.annotation.LineMessageHandler;
+import com.shd.linebot.Application;
+import com.shd.linebot.model.UserLog;
+import com.shd.linebot.model.UserLog.status;
 
 import lombok.NonNull;
 import lombok.Value;
@@ -29,7 +33,9 @@ import java.nio.file.Path;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ExecutionException;
 
@@ -38,6 +44,8 @@ import java.util.concurrent.ExecutionException;
 public class LineBotController {
     @Autowired
     private LineMessagingClient lineMessagingClient;
+
+    private Map<String, UserLog> userMap = new HashMap<String, UserLog>();
 
     @EventMapping
     public void handleTextMessage(MessageEvent<TextMessageContent> event) {
@@ -50,21 +58,16 @@ public class LineBotController {
     public void handleStickerMessage(MessageEvent<StickerMessageContent> event) {
         log.info(event.toString());
         StickerMessageContent message = event.getMessage();
-        reply(event.getReplyToken(), new StickerMessage(
-                message.getPackageId(), message.getStickerId()
-        ));
+        reply(event.getReplyToken(), new StickerMessage(message.getPackageId(), message.getStickerId()));
     }
 
     @EventMapping
     public void handleLocationMessage(MessageEvent<LocationMessageContent> event) {
         log.info(event.toString());
         LocationMessageContent message = event.getMessage();
-        reply(event.getReplyToken(), new LocationMessage(
-                (message.getTitle() == null) ? "Location replied" : message.getTitle(),
-                message.getAddress(),
-                message.getLatitude(),
-                message.getLongitude()
-        ));
+        reply(event.getReplyToken(),
+                new LocationMessage((message.getTitle() == null) ? "Location replied" : message.getTitle(),
+                        message.getAddress(), message.getLatitude(), message.getLongitude()));
     }
 
     @EventMapping
@@ -78,9 +81,7 @@ public class LineBotController {
             DownloadedContent jpg = saveContent("jpg", response);
             DownloadedContent previewImage = createTempFile("jpg");
 
-            system("convert", "-resize", "240x",
-                    jpg.path.toString(),
-                    previewImage.path.toString());
+            system("convert", "-resize", "240x", jpg.path.toString(), previewImage.path.toString());
 
             reply(replyToken, new ImageMessage(jpg.getUri(), previewImage.getUri()));
 
@@ -92,48 +93,59 @@ public class LineBotController {
     }
 
     private void handleTextContent(String replyToken, Event event, TextMessageContent content) {
+        UserLog userLog = userMap.get(event.getSource().getSenderId());
+        if (userLog == null) {
+            userLog = new UserLog(event.getSource().getSenderId(), status.DEFAULT);
+            userMap.put(event.getSource().getSenderId(), userLog);
+        }
+
         String text = content.getText();
 
-        log.info("Got text message from %s : %s", replyToken, text);
-
-        switch (text) {
+        if (userLog.getStatusBot().equals(status.DEFAULT)) {
+            switch (text) {
             case "Profile": {
                 String userId = event.getSource().getUserId();
-                if(userId != null) {
-                    lineMessagingClient.getProfile(userId)
-                            .whenComplete((profile, throwable) -> {
-                                if(throwable != null) {
-                                    this.replyText(replyToken, throwable.getMessage());
-                                    return;
-                                }
-                                this.reply(replyToken, Arrays.asList(
-                                        new TextMessage("Display name: " + profile.getDisplayName()),
+                if (userId != null) {
+                    lineMessagingClient.getProfile(userId).whenComplete((profile, throwable) -> {
+                        if (throwable != null) {
+                            this.replyText(replyToken, throwable.getMessage());
+                            return;
+                        }
+                        this.reply(replyToken,
+                                Arrays.asList(new TextMessage("Display name: " + profile.getDisplayName()),
                                         new TextMessage("Status message: " + profile.getStatusMessage()),
-                                        new TextMessage("User ID: " + profile.getUserId()),
-                                        new TextMessage("User ID: " + profile.getPictureUrl())
-                                ));
-                            });
+                                        new TextMessage("User ID: " + profile.getUserId())));
+                    });
                 }
                 break;
             }
+            case "ลงทะเบียน": {
+                this.reply(replyToken, Arrays.asList(new TextMessage("กรุณาระบุรหัสนักเรียน ")));
+                userLog.setStatusBot(status.Register);
+                break;
+            }
             default:
-                log.info("Return echo message %s : %s", replyToken, text);
-                this.replyText(replyToken, text);
+                // log.info("Return echo message %s : %s", replyToken, text);
+                // this.replyText(replyToken, text);
+                this.push(userLog.getUserID(), Arrays.asList(new TextMessage("ไม่เข้าใจคำสั่ง")));
+            }
+        } else if (userLog.getStatusBot().equals(status.DEFAULT)) {
+            log.info("Return echo message %s : %s", replyToken, text);
+            this.replyText(replyToken, text);
+            userLog.setStatusBot(status.DEFAULT);
         }
     }
 
     private void handleStickerContent(String replyToken, StickerMessageContent content) {
-        reply(replyToken, new StickerMessage(
-                content.getPackageId(), content.getStickerId()
-        ));
+        reply(replyToken, new StickerMessage(content.getPackageId(), content.getStickerId()));
     }
 
-    private void replyText(@NonNull  String replyToken, @NonNull String message) {
-        if(replyToken.isEmpty()) {
+    private void replyText(@NonNull String replyToken, @NonNull String message) {
+        if (replyToken.isEmpty()) {
             throw new IllegalArgumentException("replyToken is not empty");
         }
 
-        if(message.length() > 1000) {
+        if (message.length() > 1000) {
             message = message.substring(0, 1000 - 2) + "...";
         }
         this.reply(replyToken, new TextMessage(message));
@@ -143,11 +155,17 @@ public class LineBotController {
         reply(replyToken, Collections.singletonList(message));
     }
 
+    public void push(@NonNull String replyToken, @NonNull List<Message> messages) {
+        try {
+            lineMessagingClient.pushMessage(new PushMessage(replyToken, messages)).get();
+        } catch (InterruptedException | ExecutionException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     private void reply(@NonNull String replyToken, @NonNull List<Message> messages) {
         try {
-            BotApiResponse response = lineMessagingClient.replyMessage(
-                    new ReplyMessage(replyToken, messages)
-            ).get();
+            BotApiResponse response = lineMessagingClient.replyMessage(new ReplyMessage(replyToken, messages)).get();
         } catch (InterruptedException | ExecutionException e) {
             throw new RuntimeException(e);
         }
@@ -188,8 +206,7 @@ public class LineBotController {
     }
 
     private static String createUri(String path) {
-        return ServletUriComponentsBuilder.fromCurrentContextPath()
-                .path(path).toUriString();
+        return ServletUriComponentsBuilder.fromCurrentContextPath().path(path).toUriString();
     }
 
     @Value
