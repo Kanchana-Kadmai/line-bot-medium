@@ -131,7 +131,7 @@ public class LineBotController {
                 // this.replyText(replyToken, text);
                 this.push(userLog.getUserID(), Arrays.asList(new TextMessage("ไม่เข้าใจคำสั่ง")));
             }
-        } else if (userLog.getStatusBot().equals(status.DEFAULT)) {
+        } else if (userLog.getStatusBot().equals(status.Register)) {
             log.info("Return echo message %s : %s", replyToken, text);
             this.replyText(replyToken, text);
             userLog.setStatusBot(status.DEFAULT);
