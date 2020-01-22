@@ -74,7 +74,7 @@ public class MyAccountService {
 			sql1 = new StringBuilder();
 			sql1.append(" SELECT student_name ");
 			sql1.append(" FROM public.db_student  ");
-			sql1.append(" WHERE student_id = :studentId ");
+			sql1.append(" WHERE student_id::CHARACTER = :studentId ");
 
 			log.info("==================studentId {}", studentId);
 			MapSqlParameterSource parameter1 = new MapSqlParameterSource();
