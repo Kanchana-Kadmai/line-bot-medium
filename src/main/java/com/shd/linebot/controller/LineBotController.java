@@ -18,6 +18,7 @@ import com.linecorp.bot.model.response.BotApiResponse;
 import com.linecorp.bot.spring.boot.annotation.EventMapping;
 import com.linecorp.bot.spring.boot.annotation.LineMessageHandler;
 import com.shd.linebot.Application;
+import com.shd.linebot.helper.RichMenuHelper;
 import com.shd.linebot.model.UserLog;
 import com.shd.linebot.model.UserLog.status;
 import com.shd.linebot.service.LeaveService;
@@ -124,13 +125,13 @@ public class LineBotController {
                 userLog.setStatusBot(status.Register);
                 break;
             }
-            case "ตารางเรียน": {
+            case "ดูตารางเรียน": {
                 // this.reply(replyToken, Arrays.asList(new TextMessage("ตารางเรียน ")));
                 // userLog.setStatusBot(status.ClassSchedule);
                 myAccountService.searchHis(userLog);
                 break;
             }
-            case "ผลการเรียน": {
+            case "ดูผลการเรียน": {
                 // this.reply(replyToken, Arrays.asList(new TextMessage("เกรดเฉลี่ยอยู่ที่ 3.00
                 // ")));
                 // userLog.setStatusBot(status.AcademicResults);
@@ -174,19 +175,35 @@ public class LineBotController {
                 this.push(userLog.getUserID(), Arrays.asList(new TextMessage("สวัสดี ตอนนี้อยู่ระหว่างพัฒนา")));
             }
         } else if (userLog.getStatusBot().equals(status.Register)) {
-            myAccountService.searchName(userLog, text);
+            if (text == "Re") {
+                this.replyText(replyToken, text);
+                userLog.setStatusBot(status.DEFAULT);
+            } else {
+                myAccountService.searchName(userLog, text);
+            }
         } else if (userLog.getStatusBot().equals(status.Comfrim)) {
             switch (text) {
             case "ใช่": {
-                this.reply(replyToken, Arrays.asList(new TextMessage("เกรดเฉลี่ยอยู่ที่ 3.00 ")));
-                // userLog.setStatusBot(status.AcademicResults);
-                // myAccountService.searchHis(userLog);
+                this.reply(replyToken, Arrays.asList(new TextMessage("ลงทะเบียนสำเร็จ ")));
+                userLog.setStatusBot(status.DEFAULT);
+
+                RichMenuHelper.deleteRichMenu(lineMessagingClient, userLog.getUserID());
+                
+                System.out.println("---------- " + userLog.getUserID());
+                String pathYamlHome = "asset/richmenu-home.yml";
+                String pathImageHome = "asset/richmenu-home.jpg";
+                RichMenuHelper.createRichMenu(lineMessagingClient, pathYamlHome, pathImageHome, userLog.getUserID());
+
                 break;
             }
             case "ไม่ใช่": {
                 this.reply(replyToken, Arrays.asList(new TextMessage("กรุณาพิมพ์ รหัสนักเรียน ใหม่อีกครั้ง ")));
-                // userLog.setStatusBot(status.TeachInstead);
                 userLog.setStatusBot(status.Register);
+                break;
+            }
+            case "Re": {
+                this.replyText(replyToken, text);
+                userLog.setStatusBot(status.DEFAULT);
                 break;
             }
             default:

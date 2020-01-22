@@ -1,0 +1,67 @@
+size:
+  width: 2500
+  height: 1686
+selected: false
+name: Pico
+chatBarText: 'Menu'
+areas:
+-
+  bounds:
+    x: 0
+    y: 0
+    width: 833
+    height: 843
+  action:
+    type: uri
+    label: 'ประเมินสินเชื่อ'
+    uri: 'line://app/1600419684-yYAk5W7E'
+-
+  bounds:
+    x: 834
+    y: 0
+    width: 833
+    height: 843
+  action:
+    type: uri
+    label: 'payment'
+    uri: 'line://app/1600419684-JoZwRaxg'
+-
+  bounds:
+    x: 1667
+    y: 0
+    width: 833
+    height: 843
+  action:
+    type: uri
+    label: 'history'
+    uri: 'line://app/1600419684-y0M0PDx3'
+-
+  bounds:
+    x: 0
+    y: 843
+    width: 833
+    height: 843
+  action:
+    type: uri
+    label: location
+    uri: 'https://www.google.co.th/maps/search/เพื่อนแท้ลิสซิ่ง'
+-
+  bounds:
+    x: 834
+    y: 843
+    width: 833
+    height: 843
+  action:
+    type: uri
+    label: tel
+    uri: 'tel://0830256646'
+-
+  bounds:
+    x: 1667
+    y: 843
+    width: 833
+    height: 843
+  action:
+    type: uri
+    label: contact
+    uri: 'https://www.pueantae-capital.com'

@@ -43,7 +43,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @Data
 @Service
-public class MyAccountService {
+public class GpaService {
 
 	public class Model {
 

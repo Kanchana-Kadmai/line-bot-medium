@@ -1,0 +1,57 @@
+size:
+  width: 2500
+  height: 1686
+selected: false
+name: Home
+chatBarText: 'เมนู'
+areas:
+-
+  bounds:
+    x: 0
+    y: 0
+    width: 833
+    height: 843
+  action:
+    type: message
+    label: table
+    text: 'ดูตารางเรียน'
+-
+  bounds:
+    x: 834
+    y: 0
+    width: 833
+    height: 843
+  action:
+    type: message
+    label: gdp
+    text: 'ดูผลการเรียน'
+-
+  bounds:
+    x: 1667
+    y: 0
+    width: 833
+    height: 843
+  action:
+    type: message
+    label: busyTeacher
+    text: 'คุณครูลา'
+-
+  bounds:
+    x: 0
+    y: 843
+    width: 833
+    height: 843
+  action:
+    type: message
+    label: leave
+    text: 'แจ้งขอลา'
+-
+  bounds:
+    x: 834
+    y: 843
+    width: 1666
+    height: 843
+  action:
+    type: message
+    label: unlink
+    text: 'Flex Back'
