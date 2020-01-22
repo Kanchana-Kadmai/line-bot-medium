@@ -5,34 +5,33 @@ import java.security.Timestamp;
 import lombok.Data;
 
 @Data
-public class UserLog {
+public class UserLogPayment {
 	
-	public enum status {DEFAULT, SAVE, Register, Comfrim, AcademicResults, TeachInstead, Leave};
+	public enum statusPayment {DEFAULT,PAYMENT};
 	
-	public status getStatusBot() {
+	public statusPayment getStatusBot() {
 		return statusBot;
 	}
 	
-	public void setStatusBot(final status statusBot) {
+	public void setStatusBot(statusPayment statusBot) {
 		this.statusBot = statusBot;
 	}
-
-	public UserLog(final String userID, final status statusBot) {
+	
+	public UserLogPayment(String userID, statusPayment statusBot) {
 		this.userID = userID;
 		this.statusBot = statusBot;
 	}
 	
-	public UserLog() {
+	public UserLogPayment() {
 	}
 
 	private String userID;
 	private Integer leaveID;
-	private status statusBot;
+	private statusPayment statusBot;
 	private String leaveType;
 	private String detail;
 	private Timestamp startDate;
 	private Timestamp end_Date;
 	private String empCode;
 	private String period;
-	
 }

@@ -5,6 +5,7 @@ import com.linecorp.bot.client.LineMessagingClient;
 import com.linecorp.bot.client.MessageContentResponse;
 import com.linecorp.bot.model.PushMessage;
 import com.linecorp.bot.model.ReplyMessage;
+import com.linecorp.bot.model.action.MessageAction;
 import com.linecorp.bot.model.event.Event;
 import com.linecorp.bot.model.event.MessageEvent;
 import com.linecorp.bot.model.event.message.ImageMessageContent;
@@ -12,16 +13,20 @@ import com.linecorp.bot.model.event.message.LocationMessageContent;
 import com.linecorp.bot.model.event.message.StickerMessageContent;
 import com.linecorp.bot.model.event.message.TextMessageContent;
 import com.linecorp.bot.model.message.*;
+import com.linecorp.bot.model.message.template.ConfirmTemplate;
 import com.linecorp.bot.model.response.BotApiResponse;
 import com.linecorp.bot.spring.boot.annotation.EventMapping;
 import com.linecorp.bot.spring.boot.annotation.LineMessageHandler;
 import com.shd.linebot.Application;
 import com.shd.linebot.model.UserLog;
 import com.shd.linebot.model.UserLog.status;
+import com.shd.linebot.service.LeaveService;
+import com.shd.linebot.service.MyAccountService;
 
 import lombok.NonNull;
 import lombok.Value;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -44,6 +49,12 @@ import java.util.concurrent.ExecutionException;
 public class LineBotController {
     @Autowired
     private LineMessagingClient lineMessagingClient;
+
+    @Autowired
+    private LeaveService leaveService;
+
+    @Autowired
+    private MyAccountService myAccountService;
 
     private Map<String, UserLog> userMap = new HashMap<String, UserLog>();
 
@@ -71,24 +82,11 @@ public class LineBotController {
     }
 
     @EventMapping
-    public void handleImageMessage(MessageEvent<ImageMessageContent> event) {
-        log.info(event.toString());
+    public void handleImageMessage(MessageEvent<ImageMessageContent> event) throws Exception {
         ImageMessageContent content = event.getMessage();
-        String replyToken = event.getReplyToken();
-
-        try {
-            MessageContentResponse response = lineMessagingClient.getMessageContent(content.getId()).get();
-            DownloadedContent jpg = saveContent("jpg", response);
-            DownloadedContent previewImage = createTempFile("jpg");
-
-            system("convert", "-resize", "240x", jpg.path.toString(), previewImage.path.toString());
-
-            reply(replyToken, new ImageMessage(jpg.getUri(), previewImage.getUri()));
-
-        } catch (InterruptedException | ExecutionException e) {
-            reply(replyToken, new TextMessage("Cannot get image: " + content));
-            throw new RuntimeException(e);
-        }
+        MessageContentResponse response = lineMessagingClient.getMessageContent(content.getId()).get();
+        byte[] contentInBytes = IOUtils.toByteArray(response.getStream());
+        leaveService.leave(contentInBytes, event.getSource().getUserId(), false);
 
     }
 
@@ -126,16 +124,79 @@ public class LineBotController {
                 userLog.setStatusBot(status.Register);
                 break;
             }
+            case "ตารางเรียน": {
+                // this.reply(replyToken, Arrays.asList(new TextMessage("ตารางเรียน ")));
+                // userLog.setStatusBot(status.ClassSchedule);
+                myAccountService.searchHis(userLog);
+                break;
+            }
+            case "ผลการเรียน": {
+                // this.reply(replyToken, Arrays.asList(new TextMessage("เกรดเฉลี่ยอยู่ที่ 3.00
+                // ")));
+                // userLog.setStatusBot(status.AcademicResults);
+                myAccountService.searchHis(userLog);
+                break;
+            }
+            case "คุณครูลา": {
+                // this.reply(replyToken, Arrays.asList(new TextMessage("อาจารย์ลา ")));
+                // userLog.setStatusBot(status.TeachInstead);
+                myAccountService.searchHis(userLog);
+                break;
+            }
+            case "แจ้งขอลา": {
+                ConfirmTemplate confirmTemplate = new ConfirmTemplate("เลือก", new MessageAction("ลาป่วย", "ลาป่วย"),
+                        new MessageAction("ลากิจ", "ลากิจ"));
+                TemplateMessage templateMessage = new TemplateMessage("เลือกลา", confirmTemplate);
+                this.reply(replyToken, templateMessage);
+                break;
+            }
+            case "ลาป่วย": {
+                try {
+                    leaveService.leave(null, event.getSource().getUserId(), true);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                this.reply(replyToken, Arrays.asList(new TextMessage("กรุณาส่งรูปใบลาป่วย")));
+
+                break;
+            }
+            case "ลากิจ": {
+                try {
+                    leaveService.leave(null, event.getSource().getUserId(), true);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                this.reply(replyToken, Arrays.asList(new TextMessage("กรุณาส่งรูปใบลากิจ")));
+
+                break;
+            }
             default:
-                // log.info("Return echo message %s : %s", replyToken, text);
-                // this.replyText(replyToken, text);
-                this.push(userLog.getUserID(), Arrays.asList(new TextMessage("ไม่เข้าใจคำสั่ง")));
+                this.push(userLog.getUserID(), Arrays.asList(new TextMessage("สวัสดี ตอนนี้อยู่ระหว่างพัฒนา")));
             }
         } else if (userLog.getStatusBot().equals(status.Register)) {
-            log.info("Return echo message %s : %s", replyToken, text);
-            this.replyText(replyToken, text);
-            userLog.setStatusBot(status.DEFAULT);
+            myAccountService.searchName(userLog, text);
+        } else if (userLog.getStatusBot().equals(status.Comfrim)) {
+            switch (text) {
+            case "ใช่": {
+                this.reply(replyToken, Arrays.asList(new TextMessage("เกรดเฉลี่ยอยู่ที่ 3.00 ")));
+                // userLog.setStatusBot(status.AcademicResults);
+                // myAccountService.searchHis(userLog);
+                break;
+            }
+            case "ไม่ใช่": {
+                this.reply(replyToken, Arrays.asList(new TextMessage("กรุณาพิมพ์ รหัสนักเรียน ใหม่อีกครั้ง ")));
+                // userLog.setStatusBot(status.TeachInstead);
+                userLog.setStatusBot(status.Register);
+                break;
+            }
+            default:
+                this.push(userLog.getUserID(), Arrays.asList(new TextMessage("ไม่เข้าใจคำสั่ง")));
+            }
+        } else {
+            this.push(event.getSource().getSenderId(), Arrays.asList(new TextMessage("บอทหลับอยู่")));
+            this.reply(replyToken, new StickerMessage("1", "17"));
         }
+        userMap.put(event.getSource().getSenderId(), userLog);
     }
 
     private void handleStickerContent(String replyToken, StickerMessageContent content) {
