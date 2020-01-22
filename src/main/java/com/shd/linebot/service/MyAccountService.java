@@ -68,24 +68,24 @@ public class MyAccountService {
 		ArrayList<Map<String, Object>> student_name = new ArrayList<Map<String, Object>>();
 		try {
 
+			log.info("==================searchName");
 			jdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
 			StringBuilder sql1 = new StringBuilder();
-			StringBuilder sql2 = new StringBuilder();
-			StringBuilder sql3 = new StringBuilder();
-
 			sql1 = new StringBuilder();
 			sql1.append(" SELECT student_name ");
 			sql1.append(" FROM public.db_student  ");
 			sql1.append(" WHERE student_id = :studentId ");
 
+			log.info("==================studentId {}", studentId);
 			MapSqlParameterSource parameter1 = new MapSqlParameterSource();
 			parameter1.addValue("studentId", studentId);
 			student_name = (ArrayList<Map<String, Object>>) jdbcTemplate.queryForList(sql1.toString(), parameter1);
 
 			NumberFormat mf = NumberFormat.getInstance(new Locale("en", "US"));
 			mf.setMaximumFractionDigits(2);
-			int i;
 			int size = student_name.size();
+			
+			log.info("==================size {}", size);
 			if (size > 0) {
 					String detail = "";
 					detail += "ชื่อ "+ student_name.get(0).get("student_name") + "\nใช่หรือไม่";
@@ -98,7 +98,8 @@ public class MyAccountService {
 					userLog.setStatusBot(status.Comfrim);
 					// LineBotController.push(userLog.getUserID(), Arrays.asList(new TextMessage(detail)));
 
-			} else {
+			} else {				
+			log.info("==================Out size {}", size);
 				LineBotController.push(userLog.getUserID(),
 						Arrays.asList(new TextMessage("ไม่มีรหัสนี้ในระบบ\n กรุณากดลงทะเบียนอีกครั้ง ")));
 				userLog.setStatusBot(status.DEFAULT);
