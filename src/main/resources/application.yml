@@ -6,6 +6,6 @@ line.bot:
 spring.datasource:
   platform: postgres
   driverClassName: org.postgresql.Driver
-  url: jdbc:postgresql://SG-SHD-423-pgsql-master.servers.mongodirector.com:5432/postgres?sslmode=disable
+  url: jdbc:postgresql://SG-SHD-423-pgsql-master.servers.mongodirector.com:5432/postgres?currentSchema=public
   username: sgpostgres
   password: X7ah3Jx_k81zLrTe
