@@ -9,3 +9,4 @@ spring.datasource:
   url: jdbc:postgresql://SG-SHD-423-pgsql-master.servers.mongodirector.com:5432/postgres?currentSchema=public
   username: sgpostgres
   password: X7ah3Jx_k81zLrTe
+ 
