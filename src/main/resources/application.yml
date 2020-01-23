@@ -6,6 +6,6 @@ line.bot:
 spring.datasource:
   platform: postgres
   driverClassName: org.postgresql.Driver
-  url: jdbc:postgresql://raja.db.elephantsql.com:5432/mbsqvzky?sslmode=disable
-  username: mbsqvzky
-  password: TR-Sgyxa6dcNFg4vM_o0dSzAOl_XpXdE
+  url: jdbc:postgresql://SG-SHD-423-pgsql-master.servers.mongodirector.com:5432/postgres?sslmode=disable
+  username: sgpostgres
+  password: X7ah3Jx_k81zLrTe
