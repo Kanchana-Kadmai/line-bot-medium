@@ -67,12 +67,12 @@ public class LeaveService {
 
 	public void sendLine(String userId) throws Exception {
 		lineBotController.push(userId, Arrays.asList(new TextMessage(
-				"ระบบได้รับหลักฐานการชำระเงินของท่าน เรียบร้อยแล้ว กรุณารอการตอบกลับ จากทางเจ้าหน้าที่")));
+				"ระบบได้รับใบลาของท่าน เรียบร้อยแล้ว กรุณารอการตอบกลับ จากทางเจ้าหน้าที่")));
 	}
 
 	public void sendLineNoData(String userId) throws Exception {
 		lineBotController.push(userId, Arrays.asList(new TextMessage(
-				"กรุณาทำรายการที่ เมนู ชำระค่าเบี้ย แล้วทำขึ้นตอนดังต่อไปนี้  \n- เลือกแจ้งโอนเงิน \n- ส่งรูปสลิปการโอนเงิน ")));
+				"กรุณาทำรายการที่ เมนู แจ้งขอลา แล้วทำขึ้นตอนดังต่อไปนี้  \n- เลือกประเภทการลา \n- ส่งรูปสลิปการโอนเงิน ")));
 	}
 
 }

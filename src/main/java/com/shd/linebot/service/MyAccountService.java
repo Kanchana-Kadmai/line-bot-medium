@@ -74,7 +74,7 @@ public class MyAccountService {
 
 			sql1 = new StringBuilder();
 			sql1.append(" SELECT line_id ");
-			sql1.append(" FROM public.db_student  ");
+			sql1.append(" FROM db_student  ");
 			sql1.append(" WHERE line_id::CHARACTER = :lineId ");
 
 			MapSqlParameterSource parameter1 = new MapSqlParameterSource();
@@ -89,7 +89,7 @@ public class MyAccountService {
 			} else {
 				sql2 = new StringBuilder();
 				sql2.append(" SELECT student_name ");
-				sql2.append(" FROM public.db_student  ");
+				sql2.append(" FROM db_student  ");
 				sql2.append(" WHERE student_id::CHARACTER = :studentId ");
 
 				MapSqlParameterSource parameter2 = new MapSqlParameterSource();

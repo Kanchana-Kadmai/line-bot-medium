@@ -21,6 +21,9 @@ import com.shd.linebot.Application;
 import com.shd.linebot.helper.RichMenuHelper;
 import com.shd.linebot.model.UserLog;
 import com.shd.linebot.model.UserLog.status;
+import com.shd.linebot.service.BusyTeacherService;
+import com.shd.linebot.service.ClassService;
+import com.shd.linebot.service.GpaService;
 import com.shd.linebot.service.LeaveService;
 import com.shd.linebot.service.MyAccountService;
 
@@ -56,6 +59,15 @@ public class LineBotController {
 
     @Autowired
     private MyAccountService myAccountService;
+
+    @Autowired
+    private BusyTeacherService busyTeacherService;
+
+    @Autowired
+    private GpaService gpaService;
+    
+    @Autowired
+    private ClassService classService;
 
     private Map<String, UserLog> userMap = new HashMap<String, UserLog>();
 
@@ -126,22 +138,15 @@ public class LineBotController {
                 break;
             }
             case "ดูตารางเรียน": {
-                // this.reply(replyToken, Arrays.asList(new TextMessage("ตารางเรียน ")));
-                // userLog.setStatusBot(status.ClassSchedule);
-                myAccountService.searchHis(userLog);
+                classService.searchClass(userLog);
                 break;
             }
             case "ดูผลการเรียน": {
-                // this.reply(replyToken, Arrays.asList(new TextMessage("เกรดเฉลี่ยอยู่ที่ 3.00
-                // ")));
-                // userLog.setStatusBot(status.AcademicResults);
-                myAccountService.searchHis(userLog);
+                gpaService.searchGpa(userLog);
                 break;
             }
             case "คุณครูลา": {
-                // this.reply(replyToken, Arrays.asList(new TextMessage("อาจารย์ลา ")));
-                // userLog.setStatusBot(status.TeachInstead);
-                myAccountService.searchHis(userLog);
+                busyTeacherService.searchBusy(userLog);
                 break;
             }
             case "แจ้งขอลา": {
@@ -189,7 +194,6 @@ public class LineBotController {
 
                 RichMenuHelper.deleteRichMenu(lineMessagingClient, userLog.getUserID());
                 
-                System.out.println("---------- " + userLog.getUserID());
                 String pathYamlHome = "asset/richmenu-home.yml";
                 String pathImageHome = "asset/richmenu-home.jpg";
                 RichMenuHelper.createRichMenu(lineMessagingClient, pathYamlHome, pathImageHome, userLog.getUserID());
