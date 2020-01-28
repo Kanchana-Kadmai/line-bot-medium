@@ -187,15 +187,8 @@ public class LineBotController {
             default:
                 this.push(userLog.getUserID(), Arrays.asList(new TextMessage("สวัสดี ตอนนี้อยู่ระหว่างพัฒนา")));
             }
-        } else if (userLog.getStatusBot().equals(status.Register))
-
-        {
-            if (text == "Re") {
-                this.replyText(replyToken, text);
-                userLog.setStatusBot(status.DEFAULT);
-            } else {
+        } else if (userLog.getStatusBot().equals(status.Register)) {
                 myAccountService.searchName(userLog, text);
-            }
         } else if (userLog.getStatusBot().equals(status.Comfrim)) {
             switch (text) {
             case "ใช่": {
