@@ -65,7 +65,7 @@ public class LineBotController {
 
     @Autowired
     private GpaService gpaService;
-    
+
     @Autowired
     private ClassService classService;
 
@@ -149,6 +149,14 @@ public class LineBotController {
                 busyTeacherService.searchBusy(userLog);
                 break;
             }
+            case "New": {
+                RichMenuHelper.deleteRichMenu(lineMessagingClient, userLog.getUserID());
+
+                String pathYamlHome = "asset/richmenu-register.yml";
+                String pathImageHome = "asset/richmenu-register.jpg";
+                RichMenuHelper.createRichMenu(lineMessagingClient, pathYamlHome, pathImageHome, userLog.getUserID());
+                break;
+            }
             case "แจ้งขอลา": {
                 ConfirmTemplate confirmTemplate = new ConfirmTemplate("เลือก", new MessageAction("ลาป่วย", "ลาป่วย"),
                         new MessageAction("ลากิจ", "ลากิจ"));
@@ -179,7 +187,9 @@ public class LineBotController {
             default:
                 this.push(userLog.getUserID(), Arrays.asList(new TextMessage("สวัสดี ตอนนี้อยู่ระหว่างพัฒนา")));
             }
-        } else if (userLog.getStatusBot().equals(status.Register)) {
+        } else if (userLog.getStatusBot().equals(status.Register))
+
+        {
             if (text == "Re") {
                 this.replyText(replyToken, text);
                 userLog.setStatusBot(status.DEFAULT);
@@ -193,7 +203,7 @@ public class LineBotController {
                 userLog.setStatusBot(status.DEFAULT);
 
                 RichMenuHelper.deleteRichMenu(lineMessagingClient, userLog.getUserID());
-                
+
                 String pathYamlHome = "asset/richmenu-home.yml";
                 String pathImageHome = "asset/richmenu-home.jpg";
                 RichMenuHelper.createRichMenu(lineMessagingClient, pathYamlHome, pathImageHome, userLog.getUserID());
