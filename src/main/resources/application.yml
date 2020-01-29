@@ -1,8 +1,4 @@
-server:
- port: 8080
- servlet:
-  contextPath: /api
-  
+
 line.bot:
   channel-token: 'xujywwfTBTq6gRPCInEDv+GIyivJ0WZDSGA1d5aw99ki4YEUcBE2t8xGxLr+AU/bb0qxp18uZvWRECj4TSX1uUWu/XE8PnLSNod2dNbHsa6oYefvpGWiOUvB+8JBvVFK714/7Y9Lj1G5HR0f8gjOrAdB04t89/1O/w1cDnyilFU='
   channel-secret: 'dd02aee185fe3a382da280f61bb6b429'
