@@ -115,6 +115,9 @@ public class MyAccountService {
 
 		} catch (EmptyResultDataAccessException e) {
 			e.printStackTrace();
+			userLog.setStatusBot(status.DEFAULT);
+			LineBotController.push(userLog.getUserID(),
+							Arrays.asList(new TextMessage("Try again!! ")));
 		}
 		return result;
 	}
