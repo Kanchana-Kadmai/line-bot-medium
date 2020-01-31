@@ -74,37 +74,42 @@ public class MyAccountService {
 		ArrayList<Map<String, Object>> account_line = new ArrayList<Map<String, Object>>();
 		ArrayList<Map<String, Object>> student_name = new ArrayList<Map<String, Object>>();
 		try {
-			System.out.println(dataSource.toString());
-			jdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
-			StringBuilder sql1 = new StringBuilder();
-			StringBuilder sql2 = new StringBuilder();
+			// System.out.println(dataSource.toString());
+			// jdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
+			// StringBuilder sql1 = new StringBuilder();
+			// StringBuilder sql2 = new StringBuilder();
 
 			Connection connect = null;
 			ResultSet rec = null;
 			Statement st = null;
 			try {
 				Class.forName("org.postgresql.Driver");
-				connect = DriverManager
-						.getConnection("jdbc:postgresql://raja.db.elephantsql.com:5432/mbsqvzky?user=mbsqvzky&password=TR-Sgyxa6dcNFg4vM_o0dSzAOl_XpXdE&serverTimezone=UTC");
+				connect = DriverManager.getConnection(
+						"jdbc:postgresql://raja.db.elephantsql.com:5432/mbsqvzky?user=mbsqvzky&password=TR-Sgyxa6dcNFg4vM_o0dSzAOl_XpXdE&serverTimezone=UTC");
 				st = connect.createStatement();
-				String sql = null;
-				sql = " SELECT line_id FROM db_student ";
-				rec = st.executeQuery(sql);
-				while (rec.next()) {
-					System.out.println(rec.getString("line_id"));
-				}
+				String sql1 = null;
+				sql1 = " SELECT line_id FROM db_student WHERE line_id = :lineId";
+				rec = st.executeQuery(sql1);
+				MapSqlParameterSource parameter1 = new MapSqlParameterSource();
+				parameter1.addValue("lineId", userLog.getUserID());
+				account_line = (ArrayList<Map<String, Object>>) jdbcTemplate.queryForList(sql1.toString(), parameter1);
+
+				// while (rec.next()) {
+				// System.out.println(rec.getString("line_id"));
+				// }
 			} catch (Exception ex) {
 				ex.printStackTrace();
 			}
 
-			sql1 = new StringBuilder();
-			sql1.append(" SELECT line_id ");
-			sql1.append(" FROM db_student  ");
-			sql1.append(" WHERE line_id = :lineId ");
-			System.out.println();
-			MapSqlParameterSource parameter1 = new MapSqlParameterSource();
-			parameter1.addValue("lineId", userLog.getUserID());
-			account_line = (ArrayList<Map<String, Object>>) jdbcTemplate.queryForList(sql1.toString(), parameter1);
+			// sql1 = new StringBuilder();
+			// sql1.append(" SELECT line_id ");
+			// sql1.append(" FROM db_student ");
+			// sql1.append(" WHERE line_id = :lineId ");
+			// System.out.println();
+			// MapSqlParameterSource parameter1 = new MapSqlParameterSource();
+			// parameter1.addValue("lineId", userLog.getUserID());
+			// account_line = (ArrayList<Map<String, Object>>)
+			// jdbcTemplate.queryForList(sql1.toString(), parameter1);
 
 			int size_line = account_line.size();
 			if (size_line > 0) {
@@ -112,15 +117,26 @@ public class MyAccountService {
 						Arrays.asList(new TextMessage("คุณได้ลงทะเบียนไปแล้วเรียบร้อย กรุณาติดต่อผู้ดูแลระบบ ")));
 				userLog.setStatusBot(status.DEFAULT);
 			} else {
-				sql2 = new StringBuilder();
-				sql2.append(" SELECT st.student_title || st.student_name || ' ' || rm.room_number as student_name");
-				sql2.append(" FROM db_student st ");
-				sql2.append(" JOIN db_room rm ON rm.room_id = st.room_id  ");
-				sql2.append(" WHERE st.student_id = :studentId ");
+				// sql2 = new StringBuilder();
+				try {
+					String sql2 = null;
+					sql2 = " SELECT st.student_title || st.student_name || ' ' || rm.room_number as student_name"
+							+ " FROM db_student st " + " JOIN db_room rm ON rm.room_id = st.room_id  "
+							+ " WHERE st.student_id = :studentId ";
+					rec = st.executeQuery(sql2);
+					MapSqlParameterSource parameter2 = new MapSqlParameterSource();
+					parameter2.addValue("studentId", studentId);
+					student_name = (ArrayList<Map<String, Object>>) jdbcTemplate.queryForList(sql2.toString(),
+							parameter2);
 
-				MapSqlParameterSource parameter2 = new MapSqlParameterSource();
-				parameter2.addValue("studentId", studentId);
-				student_name = (ArrayList<Map<String, Object>>) jdbcTemplate.queryForList(sql2.toString(), parameter2);
+				} catch (Exception ex) {
+					ex.printStackTrace();
+				}
+				// sql2.append(" SELECT st.student_title || st.student_name || ' ' ||
+				// rm.room_number as student_name");
+				// sql2.append(" FROM db_student st ");
+				// sql2.append(" JOIN db_room rm ON rm.room_id = st.room_id ");
+				// sql2.append(" WHERE st.student_id = :studentId ");
 
 				int size = student_name.size();
 				if (size > 0) {
