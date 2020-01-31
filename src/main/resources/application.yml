@@ -15,8 +15,7 @@ security:
   
 spring.datasource:
   platform: postgres
-  driverClassName: org.postgresql.Driver
-  url: jdbc:postgresql://52.77.234.86:31281/softtradedb?sslmode=disable
-  username: softtrade_dev
-  password: bentturtle33
-
+  driverClassName: ${SPRING_DATASOURCE_DRIVER-CLASS-NAME}
+  url: ${SPRING_DATASOURCE_URL}
+  username: ${SPRING_DATASOURCE_USERNAME}
+  password: ${SPRING_DATASOURCE_PASSWORD}
