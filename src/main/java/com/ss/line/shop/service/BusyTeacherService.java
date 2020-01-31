@@ -62,19 +62,8 @@ public class BusyTeacherService {
 			sql1.append(" JOIN db_teacher th ON (th.teacher_id = bt.teacher_id) ");
 			sql1.append(" JOIN db_teacher rth ON (rth.teacher_id = bt.teacher_re) ");
 			sql1.append(" JOIN db_status stu ON (stu.table_name='busy_teacher' AND stu.column_name='busyStatus') ");
-			sql1.append(" WHERE :dateNow::DATE BETWEEN start_leave::DATE AND end_leave::DATE ");
-
-			LocalDate localDate = LocalDate.now();// For reference
-			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy MM dd");
-			String formattedString = localDate.format(formatter);
-			System.out.println(formattedString);
-			// LocalDate date = LocalDate.now();
-			// DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy MM dd");
-			// String text = date.format(formatter);
-			// LocalDate parsedDate = LocalDate.parse(text, formatter);
 
 			MapSqlParameterSource parameter1 = new MapSqlParameterSource();
-			parameter1.addValue("dateNow", formattedString);
 			result = (ArrayList<Map<String, Object>>) jdbcTemplate.queryForList(sql1.toString(), parameter1);
 
 			int x;

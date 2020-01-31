@@ -10,4 +10,5 @@ public class RoomModel {
 	private String firstRoom;
 	private String secondRoom;
 	private String remark;
+
 }
