@@ -5,10 +5,12 @@ import com.ss.line.shop.model.FoundModel;
 import com.ss.line.shop.model.HolidayModel;
 import com.ss.line.shop.model.RoomModel;
 import com.ss.line.shop.service.LineService;
+import com.ss.line.shop.service.MyAccountService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;

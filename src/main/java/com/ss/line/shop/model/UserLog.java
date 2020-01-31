@@ -34,4 +34,5 @@ public class UserLog {
 	private Timestamp end_Date;
 	private String empCode;
 	private String period;
+	private String studentId;
 }

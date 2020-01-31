@@ -48,6 +48,16 @@ public class MyAccountService {
 
 	public UserLog userLog;
 
+	public void test() {
+		jdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
+		StringBuilder sql1 = new StringBuilder();
+		final MapSqlParameterSource parameter1 = new MapSqlParameterSource();
+		sql1 = new StringBuilder();
+		sql1.append(" SELECT line_id ");
+		sql1.append(" FROM db_student  ");
+		jdbcTemplate.queryForList(sql1.toString(), parameter1);
+	}
+
 	public ArrayList<Map<String, Object>> searchName(final UserLog userLog, final String studentId) {
 		final ArrayList<Map<String, Object>> result = new ArrayList<Map<String, Object>>();
 		ArrayList<Map<String, Object>> account_line = new ArrayList<Map<String, Object>>();
@@ -90,6 +100,7 @@ public class MyAccountService {
 
 					lineBotController.push(userLog.getUserID(), Arrays.asList(templateMessage));
 					userLog.setStatusBot(status.Comfrim);
+					userLog.setStudentId(studentId);
 
 				} else {
 					lineBotController.push(userLog.getUserID(),
@@ -114,9 +125,9 @@ public class MyAccountService {
 			StringBuilder sql2 = new StringBuilder();
 
 			sql1 = new StringBuilder();
-			sql1.append(" SELECT line_id ");
-			sql1.append(" FROM TrainSQL.db_student  ");
-			sql1.append(" WHERE line_id::VARCHAR = :lineId ");
+			sql1.append(" UPDATE db_student ");
+			sql1.append(" SET line_id=:lineId, active=true  ");
+			sql1.append(" WHERE student_id=:studentId ");
 
 			final MapSqlParameterSource parameter1 = new MapSqlParameterSource();
 			parameter1.addValue("lineId", userLog.getUserID());

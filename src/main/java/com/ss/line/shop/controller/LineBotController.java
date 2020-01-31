@@ -164,6 +164,7 @@ public class LineBotController {
 		} else if (userLog.getStatusBot().equals(status.Comfrim)) {
 			switch (text) {
 			case "ใช่": {
+				myAccountService.updateLineSutudent(userLog, userLog.getStudentId());
 				this.reply(replyToken, Arrays.asList(new TextMessage("ลงทะเบียนสำเร็จ ")));
 				userLog.setStatusBot(status.DEFAULT);
 
