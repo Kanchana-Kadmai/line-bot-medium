@@ -78,25 +78,31 @@ public class MyAccountService {
 			// jdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
 			// StringBuilder sql1 = new StringBuilder();
 			// StringBuilder sql2 = new StringBuilder();
-
+			String lineZise = null;
+			String name = null;
 			Connection connect = null;
-			ResultSet rec = null;
-			Statement st = null;
+			ResultSet rec1 = null;
+			ResultSet rec2 = null;
+			Statement st1 = null;
+			Statement st2 = null;
+
 			try {
 				Class.forName("org.postgresql.Driver");
 				connect = DriverManager.getConnection(
 						"jdbc:postgresql://raja.db.elephantsql.com:5432/mbsqvzky?user=mbsqvzky&password=TR-Sgyxa6dcNFg4vM_o0dSzAOl_XpXdE&serverTimezone=UTC");
-				st = connect.createStatement();
+						st1 = connect.createStatement();
 				String sql1 = null;
-				sql1 = " SELECT line_id FROM db_student WHERE line_id = :lineId";
-				rec = st.executeQuery(sql1);
-				MapSqlParameterSource parameter1 = new MapSqlParameterSource();
-				parameter1.addValue("lineId", userLog.getUserID());
-				account_line = (ArrayList<Map<String, Object>>) jdbcTemplate.queryForList(sql1.toString(), parameter1);
+				sql1 = " SELECT line_id FROM db_student WHERE line_id = '" + userLog.getUserID() + "'";
+				rec1 = st1.executeQuery(sql1);
+				// MapSqlParameterSource parameter1 = new MapSqlParameterSource();
+				// parameter1.addValue("lineId", userLog.getUserID());
+				// account_line = (ArrayList<Map<String, Object>>)
+				// jdbcTemplate.queryForList(sql1.toString(), parameter1);
 
-				// while (rec.next()) {
-				System.out.println(rec.getString(sql1.toString()));
-				// }
+				while (rec1.next()) {
+					System.out.println(rec1.getString("line_id").toString());
+					lineZise = rec1.getString("line_id").toString();
+				}
 			} catch (Exception ex) {
 				ex.printStackTrace();
 			}
@@ -111,8 +117,8 @@ public class MyAccountService {
 			// account_line = (ArrayList<Map<String, Object>>)
 			// jdbcTemplate.queryForList(sql1.toString(), parameter1);
 
-			int size_line = account_line.size();
-			if (size_line > 0) {
+			// int size_line = account_line.size();
+			if (lineZise.isEmpty()) {
 				LineBotController.push(userLog.getUserID(),
 						Arrays.asList(new TextMessage("คุณได้ลงทะเบียนไปแล้วเรียบร้อย กรุณาติดต่อผู้ดูแลระบบ ")));
 				userLog.setStatusBot(status.DEFAULT);
@@ -122,13 +128,17 @@ public class MyAccountService {
 					String sql2 = null;
 					sql2 = " SELECT st.student_title || st.student_name || ' ' || rm.room_number as student_name"
 							+ " FROM db_student st " + " JOIN db_room rm ON rm.room_id = st.room_id  "
-							+ " WHERE st.student_id = :studentId ";
-					rec = st.executeQuery(sql2);
-					MapSqlParameterSource parameter2 = new MapSqlParameterSource();
-					parameter2.addValue("studentId", studentId);
-					student_name = (ArrayList<Map<String, Object>>) jdbcTemplate.queryForList(sql2.toString(),
-							parameter2);
-
+							+ " WHERE st.student_id = '" + studentId + "'";
+					rec2 = st2.executeQuery(sql2);
+					// MapSqlParameterSource parameter2 = new MapSqlParameterSource();
+					// parameter2.addValue("studentId", studentId);
+					// student_name = (ArrayList<Map<String, Object>>)
+					// jdbcTemplate.queryForList(sql2.toString(),
+					// parameter2);
+					while (rec2.next()) {
+						System.out.println(rec2.getString("student_name").toString());
+						name = rec2.getString("student_name").toString();
+					}
 				} catch (Exception ex) {
 					ex.printStackTrace();
 				}
@@ -139,7 +149,7 @@ public class MyAccountService {
 				// sql2.append(" WHERE st.student_id = :studentId ");
 
 				int size = student_name.size();
-				if (size > 0) {
+				if (name.isEmpty()) {
 					String detail = "ชื่อ " + student_name.get(0).get("student_name") + " ใช่หรือไม่";
 					ConfirmTemplate confirmTemplate = new ConfirmTemplate(detail, new MessageAction("ใช่", "ใช่"),
 							new MessageAction("ไม่ใช่", "ไม่ใช่"));
