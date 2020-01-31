@@ -26,6 +26,7 @@ import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 //import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.linecorp.bot.model.action.MessageAction;
 import com.linecorp.bot.model.message.ImageMessage;
@@ -43,6 +44,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @Data
 @Service
+@Transactional
 public class MyAccountService {
 
 	public class Model {
@@ -57,7 +59,7 @@ public class MyAccountService {
 
 	@Autowired
 	private DataSource dataSource;
-	@Autowired
+	
 	private NamedParameterJdbcTemplate jdbcTemplate = null;
 
 	@Autowired
