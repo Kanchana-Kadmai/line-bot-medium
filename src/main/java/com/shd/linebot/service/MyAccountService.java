@@ -38,6 +38,7 @@ import com.linecorp.bot.model.message.TemplateMessage;
 import com.linecorp.bot.model.message.TextMessage;
 import com.linecorp.bot.model.message.template.ConfirmTemplate;
 import com.shd.linebot.controller.LineBotController;
+import com.shd.linebot.model.UserLine;
 import com.shd.linebot.model.UserLog;
 import com.shd.linebot.model.UserLog.status;
 import com.shd.linebot.utils.BeanUtils;
@@ -85,12 +86,13 @@ public class MyAccountService {
 			ResultSet rec2 = null;
 			Statement st1 = null;
 			Statement st2 = null;
+			UserLine userLine = new UserLine();
 
 			try {
 				Class.forName("org.postgresql.Driver");
 				connect = DriverManager.getConnection(
 						"jdbc:postgresql://raja.db.elephantsql.com:5432/mbsqvzky?user=mbsqvzky&password=TR-Sgyxa6dcNFg4vM_o0dSzAOl_XpXdE&serverTimezone=UTC");
-						st1 = connect.createStatement();
+				st1 = connect.createStatement();
 				String sql1 = null;
 				sql1 = " SELECT line_id FROM db_student WHERE line_id = '" + userLog.getUserID() + "'";
 				rec1 = st1.executeQuery(sql1);
@@ -100,8 +102,9 @@ public class MyAccountService {
 				// jdbcTemplate.queryForList(sql1.toString(), parameter1);
 
 				while (rec1.next()) {
-					System.out.println("-------------------line_id---------------------"+rec1.getString("line_id"));
+					System.out.println("-------------------line_id---------------------" + rec1.getString("line_id"));
 					lineZise = rec1.getString("line_id").toString();
+					userLine.setLineId(rec1.getString("line_id"));
 				}
 			} catch (Exception ex) {
 				ex.printStackTrace();
@@ -119,7 +122,7 @@ public class MyAccountService {
 
 			// int size_line = account_line.size();
 			// lineZise.isEmpty()
-			if (BeanUtils.isNotEmpty(lineZise)) {
+			if (BeanUtils.isNotEmpty(userLine.getLineId())) {
 				LineBotController.push(userLog.getUserID(),
 						Arrays.asList(new TextMessage("คุณได้ลงทะเบียนไปแล้วเรียบร้อย กรุณาติดต่อผู้ดูแลระบบ ")));
 				userLog.setStatusBot(status.DEFAULT);
