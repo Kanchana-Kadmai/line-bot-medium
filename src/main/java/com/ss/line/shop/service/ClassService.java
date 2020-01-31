@@ -6,10 +6,7 @@ import java.util.Map;
 
 import javax.sql.DataSource;
 
-import com.linecorp.bot.model.action.MessageAction;
-import com.linecorp.bot.model.message.TemplateMessage;
 import com.linecorp.bot.model.message.TextMessage;
-import com.linecorp.bot.model.message.template.ConfirmTemplate;
 import com.ss.line.shop.controller.LineBotController;
 import com.ss.line.shop.model.UserLog;
 import com.ss.line.shop.model.UserLog.status;
@@ -28,17 +25,6 @@ import lombok.extern.slf4j.Slf4j;
 @Data
 @Service
 public class ClassService {
-
-	public class Model {
-
-		public String profileCode;
-		public String profileDesc;
-		public Boolean active;
-		// private String createdProgram;
-		// private String updatedProgram;
-
-	}
-
 	@Autowired
 	private DataSource dataSource;
 	private NamedParameterJdbcTemplate jdbcTemplate = null;
@@ -49,12 +35,9 @@ public class ClassService {
 
 	public ArrayList<Map<String, Object>> searchClass(UserLog userLog) {
 		ArrayList<Map<String, Object>> result = new ArrayList<Map<String, Object>>();
-		ArrayList<Map<String, Object>> account_line = new ArrayList<Map<String, Object>>();
-		ArrayList<Map<String, Object>> student_name = new ArrayList<Map<String, Object>>();
 		try {
 			jdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
 			StringBuilder sql1 = new StringBuilder();
-			StringBuilder sql2 = new StringBuilder();
 
 			sql1 = new StringBuilder();
 			sql1.append(" SELECT rm.subject_table ");
@@ -68,17 +51,14 @@ public class ClassService {
 
 			int size = result.size();
 			if (size > 0) {
-				String detail = "ชื่อ " + student_name.get(0).get("student_name") + " ใช่หรือไม่";
-				ConfirmTemplate confirmTemplate = new ConfirmTemplate(detail, new MessageAction("ใช่", "ใช่"),
-						new MessageAction("ไม่ใช่", "ไม่ใช่"));
-				TemplateMessage templateMessage = new TemplateMessage("ยืนยัน", confirmTemplate);
-
-				LineBotController.push(userLog.getUserID(), Arrays.asList(templateMessage));
-				userLog.setStatusBot(status.Comfrim);
+				String detail = "";
+				detail+=(String)result.get(0).get("subject_table");
+				LineBotController.push(userLog.getUserID(), Arrays.asList(new TextMessage(detail)));
+				userLog.setStatusBot(status.DEFAULT);
 
 			} else {
 				LineBotController.push(userLog.getUserID(),
-						Arrays.asList(new TextMessage("ไม่มีรหัสนี้ในระบบ\n กรุณากดลงทะเบียนอีกครั้ง ")));
+						Arrays.asList(new TextMessage("ไม่มีการบันทึกตารางเรียน กรุณาติดต่อเจ้าหน้าที่ ")));
 				userLog.setStatusBot(status.DEFAULT);
 			}
 

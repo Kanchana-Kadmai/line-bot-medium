@@ -177,8 +177,8 @@ public class LineBotController {
 				break;
 			}
 			case "ไม่ใช่": {
-				this.reply(replyToken, Arrays.asList(new TextMessage("กรุณาพิมพ์ รหัสนักเรียน ใหม่อีกครั้ง ")));
-				userLog.setStatusBot(status.Register);
+				this.reply(replyToken, Arrays.asList(new TextMessage("กรุณากดลงทะเบียนอีกครั้ง ")));
+				userLog.setStatusBot(status.DEFAULT);
 				break;
 			}
 			case "Re": {
