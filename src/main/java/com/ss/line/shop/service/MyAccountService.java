@@ -100,6 +100,7 @@ public class MyAccountService {
 
 				final MapSqlParameterSource parameter2 = new MapSqlParameterSource();
 				parameter2.addValue("studentId", studentId);
+				userLog.setStudentId(studentId);
 				student_name = (ArrayList<Map<String, Object>>) jdbcTemplate.queryForList(sql2.toString(), parameter2);
 
 				final int size = student_name.size();
@@ -111,7 +112,6 @@ public class MyAccountService {
 
 					lineBotController.push(userLog.getUserID(), Arrays.asList(templateMessage));
 					userLog.setStatusBot(status.Comfrim);
-					userLog.setStudentId(studentId);
 
 				} else {
 					lineBotController.push(userLog.getUserID(),
@@ -139,10 +139,11 @@ public class MyAccountService {
 			sql1.append(" WHERE student_id=:studentId ");
 
 			final MapSqlParameterSource parameter1 = new MapSqlParameterSource();
+			System.out.println(userLog.getUserID());
+			System.out.println(userLog.getStudentId());
 			parameter1.addValue("lineId", userLog.getUserID());
 			parameter1.addValue("studentId", userLog.getStudentId());
 			account_line = (ArrayList<Map<String, Object>>) jdbcTemplate.queryForList(sql1.toString(), parameter1);
-
 
 			RichMenuHelper.deleteRichMenu(lineMessagingClient, userLog.getUserID());
 
