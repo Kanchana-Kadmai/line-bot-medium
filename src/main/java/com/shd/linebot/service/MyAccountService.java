@@ -118,7 +118,8 @@ public class MyAccountService {
 			// jdbcTemplate.queryForList(sql1.toString(), parameter1);
 
 			// int size_line = account_line.size();
-			if (lineZise.isEmpty()) {
+			// lineZise.isEmpty()
+			if (BeanUtils.isNotEmpty(lineZise)) {
 				LineBotController.push(userLog.getUserID(),
 						Arrays.asList(new TextMessage("คุณได้ลงทะเบียนไปแล้วเรียบร้อย กรุณาติดต่อผู้ดูแลระบบ ")));
 				userLog.setStatusBot(status.DEFAULT);
@@ -149,7 +150,7 @@ public class MyAccountService {
 				// sql2.append(" WHERE st.student_id = :studentId ");
 
 				int size = student_name.size();
-				if (name.isEmpty()) {
+				if (BeanUtils.isNotEmpty(name)) {
 					String detail = "ชื่อ " + student_name.get(0).get("student_name") + " ใช่หรือไม่";
 					ConfirmTemplate confirmTemplate = new ConfirmTemplate(detail, new MessageAction("ใช่", "ใช่"),
 							new MessageAction("ไม่ใช่", "ไม่ใช่"));
