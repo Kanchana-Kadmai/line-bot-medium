@@ -99,14 +99,14 @@ public class LineRepository {
 		try {
 			jdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
 			stb = new StringBuilder();
-			stb.append(" UPDATE employee SET emp_emp_line_id = :lineid");
-			stb.append(" WHERE emp_emp_code = :empcode ");
+			stb.append(" select * from db_student where line_id = 'pee'");
 
 			MapSqlParameterSource parameters = new MapSqlParameterSource();
-			parameters.addValue("empcode", userLog.getEmpCode());
-			parameters.addValue("lineid", userLog.getUserID());
+			// parameters.addValue("empcode", userLog.getEmpCode());
+			// parameters.addValue("lineid", userLog.getUserID());
 
 			aaa = jdbcTemplate.update(stb.toString(), parameters);
+			System.out.println(aaa);
 			return aaa;
 			// (stb.toString(), parameters,
 			// new BeanPropertyRowMapper<Entity>(Entity.class));
