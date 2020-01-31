@@ -30,6 +30,8 @@ public class LineController {
 	@Autowired
 	private LineService lineService;
 
+	@Autowired
+	private MyAccountService myAccountService;
 	@PostMapping(path = "/foundStudent")
 	public void foundStudent(@RequestBody FoundModel data) throws Exception {
 		lineService.foundStudent(data);
@@ -45,4 +47,8 @@ public class LineController {
 		lineService.changeClassroom(data);
 	}
 
+	@GetMapping(path = "/test")
+	public void changeClassroom() throws Exception {
+		myAccountService.test();
+	}
 }
