@@ -99,10 +99,10 @@ public class MyAccountService {
 				// account_line = (ArrayList<Map<String, Object>>)
 				// jdbcTemplate.queryForList(sql1.toString(), parameter1);
 
-				// while (rec1.next()) {
+				while (rec1.next()) {
 					System.out.println("-------------------line_id---------------------"+rec1.getString("line_id"));
 					lineZise = rec1.getString("line_id").toString();
-				// }
+				}
 			} catch (Exception ex) {
 				ex.printStackTrace();
 			}
