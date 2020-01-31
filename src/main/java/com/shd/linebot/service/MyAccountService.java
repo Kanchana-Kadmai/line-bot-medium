@@ -59,7 +59,6 @@ public class MyAccountService {
 
 	@Autowired
 	private DataSource dataSource;
-	
 	private NamedParameterJdbcTemplate jdbcTemplate = null;
 
 	@Autowired
@@ -78,7 +77,7 @@ public class MyAccountService {
 
 			sql1 = new StringBuilder();
 			sql1.append(" SELECT line_id ");
-			sql1.append(" FROM public.db_student  ");
+			sql1.append(" FROM db_student  ");
 			sql1.append(" WHERE line_id::CHARACTER = :lineId ");
 			System.out.println();
 			MapSqlParameterSource parameter1 = new MapSqlParameterSource();
