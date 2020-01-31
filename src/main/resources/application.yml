@@ -10,4 +10,7 @@ spring.datasource:
   url: jdbc:postgresql://raja.db.elephantsql.com:5432/mbsqvzky?sslmode=disable
   username: mbsqvzky
   password: TR-Sgyxa6dcNFg4vM_o0dSzAOl_XpXdE
+  hikari:
+   minimum-idle: 1
+   maximum-pool-size: 10  
  
