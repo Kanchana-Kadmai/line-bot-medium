@@ -14,4 +14,4 @@ areas:
   action:
     type: message
     label: Register
-    uri: 'ลงทะเบียน'
+    text: 'ลงทะเบียน'

@@ -14,7 +14,7 @@ areas:
   action:
     type: message
     label: table
-    uri: 'ดูตารางเรียน'
+    text: 'ดูตารางเรียน'
 -
   bounds:
     x: 834
@@ -24,7 +24,7 @@ areas:
   action:
     type: message
     label: gdp
-    uri: 'ดูผลการเรียน'
+    text: 'ดูผลการเรียน'
 -
   bounds:
     x: 1667
@@ -34,4 +34,4 @@ areas:
   action:
     type: message
     label: busyTeacher
-    uri: 'คุณครูลา'
+    text: 'คุณครูลา'
