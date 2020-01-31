@@ -4,8 +4,8 @@ server:
   contextPath: /api
 
 line.bot:
-  channel-token: 'if2anSp7EwcriyIrM7PVUd9AmU5KjcrwMJ2VvunRRDPGc3Ph89Y844/+Z8HitHk8b0qxp18uZvWRECj4TSX1uUWu/XE8PnLSNod2dNbHsa7WFzi6iluVGn87lG635pyEUsTEZeZtENKllNHgL9p6EAdB04t89/1O/w1cDnyilFU='
-  channel-secret: 'a68d9e7d2d11f5e6d6816834c78cdec9'
+  channel-token: '7pdujJp8sYL1yyEqkHK6C55B+zuTDTMi15mnjCCAm9nH6L+50Gx5EU4E7UaM90iYOmYHqTk5EMxdUAZwRVmyEyA9yRY071rr7vJAkCnGDYsS0Ods7PxyvjRZ2+lZY7oEOB3dRz4Wdjf65iwtkvVdCgdB04t89/1O/w1cDnyilFU='
+  channel-secret: 'e0f8c3d6ac884966410c01c884cc6a23'
   handler.path: /callback
 
 security:
