@@ -10,7 +10,7 @@ import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 
 
-@SpringBootApplication(scanBasePackages = { "com.iphayao.linebot"
+@SpringBootApplication(scanBasePackages = { "com.iphayao.linebot.controller"
 		,"com.iphayao.linebot.service"
 		,"com.iphayao.linebot.config"})
 public class Application extends SpringBootServletInitializer {
