@@ -65,8 +65,13 @@ public class BusyTeacherService {
 			sql1.append(" WHERE :dateNow::DATE BETWEEN start_leave::DATE AND end_leave::DATE ");
 
 			LocalDate localDate = LocalDate.now();// For reference
-			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-mm-dd");
+			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy MM dd");
 			String formattedString = localDate.format(formatter);
+			System.out.println(formattedString);
+			// LocalDate date = LocalDate.now();
+			// DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy MM dd");
+			// String text = date.format(formatter);
+			// LocalDate parsedDate = LocalDate.parse(text, formatter);
 
 			MapSqlParameterSource parameter1 = new MapSqlParameterSource();
 			parameter1.addValue("dateNow", formattedString);

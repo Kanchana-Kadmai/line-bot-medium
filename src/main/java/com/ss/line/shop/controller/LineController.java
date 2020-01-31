@@ -32,18 +32,22 @@ public class LineController {
 
 	@Autowired
 	private MyAccountService myAccountService;
+
 	@PostMapping(path = "/foundStudent")
 	public void foundStudent(@RequestBody FoundModel data) throws Exception {
+		System.out.println(data);
 		lineService.foundStudent(data);
 	}
 
 	@PostMapping(path = "/holiday")
 	public void holiday(@RequestBody HolidayModel data) throws Exception {
+		System.out.println(data);
 		lineService.holiday(data);
 	}
 
 	@PostMapping(path = "/changeClassroom")
 	public void changeClassroom(@RequestBody RoomModel data) throws Exception {
+		System.out.println(data);
 		lineService.changeClassroom(data);
 	}
 
