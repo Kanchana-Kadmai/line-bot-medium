@@ -57,6 +57,7 @@ public class MyAccountService {
 
 	@Autowired
 	private DataSource dataSource;
+	@Autowired
 	private NamedParameterJdbcTemplate jdbcTemplate = null;
 
 	@Autowired
@@ -68,6 +69,7 @@ public class MyAccountService {
 		ArrayList<Map<String, Object>> account_line = new ArrayList<Map<String, Object>>();
 		ArrayList<Map<String, Object>> student_name = new ArrayList<Map<String, Object>>();
 		try {
+			System.out.println(dataSource.toString());			
 			jdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
 			StringBuilder sql1 = new StringBuilder();
 			StringBuilder sql2 = new StringBuilder();
@@ -76,7 +78,7 @@ public class MyAccountService {
 			sql1.append(" SELECT line_id ");
 			sql1.append(" FROM public.db_student  ");
 			sql1.append(" WHERE line_id::CHARACTER = :lineId ");
-
+			System.out.println();
 			MapSqlParameterSource parameter1 = new MapSqlParameterSource();
 			parameter1.addValue("lineId", userLog.getUserID());
 			account_line = (ArrayList<Map<String, Object>>) jdbcTemplate.queryForList(sql1.toString(), parameter1);
@@ -99,7 +101,7 @@ public class MyAccountService {
 
 				int size = student_name.size();
 				if (size > 0) {
-					String detail = "ชื่อ " + student_name.get(0).get("student_name") +" ใช่หรือไม่";
+					String detail = "ชื่อ " + student_name.get(0).get("student_name") + " ใช่หรือไม่";
 					ConfirmTemplate confirmTemplate = new ConfirmTemplate(detail, new MessageAction("ใช่", "ใช่"),
 							new MessageAction("ไม่ใช่", "ไม่ใช่"));
 					TemplateMessage templateMessage = new TemplateMessage("ยืนยัน", confirmTemplate);
@@ -117,8 +119,7 @@ public class MyAccountService {
 		} catch (EmptyResultDataAccessException e) {
 			e.printStackTrace();
 			userLog.setStatusBot(status.DEFAULT);
-			LineBotController.push(userLog.getUserID(),
-							Arrays.asList(new TextMessage("Try again!! ")));
+			LineBotController.push(userLog.getUserID(), Arrays.asList(new TextMessage("Try again!! ")));
 		}
 		return result;
 	}
