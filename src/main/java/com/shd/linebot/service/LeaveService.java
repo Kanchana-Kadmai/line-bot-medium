@@ -72,7 +72,7 @@ public class LeaveService {
 
 	public void sendLineNoData(String userId) throws Exception {
 		lineBotController.push(userId, Arrays.asList(new TextMessage(
-				"กรุณาทำรายการที่ เมนู แจ้งขอลา แล้วทำขึ้นตอนดังต่อไปนี้  \n- เลือกประเภทการลา \n- ส่งรูปสลิปการโอนเงิน ")));
+				"กรุณาทำรายการที่ เมนู แจ้งลา แล้วทำขั้นตอนดังต่อไปนี้  \n- เลือกประเภทการลา \n- ส่งรูปใบลา ")));
 	}
 
 }
