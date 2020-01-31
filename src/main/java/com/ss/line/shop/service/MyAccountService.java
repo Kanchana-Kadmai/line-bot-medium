@@ -53,8 +53,8 @@ public class MyAccountService {
 		StringBuilder sql1 = new StringBuilder();
 		final MapSqlParameterSource parameter1 = new MapSqlParameterSource();
 		sql1 = new StringBuilder();
-		sql1.append(" SELECT line_id ");
-		sql1.append(" FROM \"TrainSQL\".db_student  ");
+		sql1.append(" SELECT 1 ");
+		sql1.append(" FROM su_user  ");
 		jdbcTemplate.queryForList(sql1.toString(), parameter1);
 	}
 
