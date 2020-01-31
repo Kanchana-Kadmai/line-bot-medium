@@ -7,6 +7,11 @@ line.bot:
   channel-token: 'if2anSp7EwcriyIrM7PVUd9AmU5KjcrwMJ2VvunRRDPGc3Ph89Y844/+Z8HitHk8b0qxp18uZvWRECj4TSX1uUWu/XE8PnLSNod2dNbHsa7WFzi6iluVGn87lG635pyEUsTEZeZtENKllNHgL9p6EAdB04t89/1O/w1cDnyilFU='
   channel-secret: 'a68d9e7d2d11f5e6d6816834c78cdec9'
   handler.path: /callback
+
+security:
+  user:
+    name: user # Default user name.
+    password: password # Password for the default user name. A 
   
 spring.datasource:
   platform: postgres
