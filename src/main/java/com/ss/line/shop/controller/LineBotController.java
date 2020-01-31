@@ -165,15 +165,6 @@ public class LineBotController {
 			switch (text) {
 			case "ใช่": {
 				myAccountService.updateLineSutudent(userLog);
-				this.reply(replyToken, Arrays.asList(new TextMessage("ลงทะเบียนสำเร็จ ")));
-				userLog.setStatusBot(status.DEFAULT);
-
-				RichMenuHelper.deleteRichMenu(lineMessagingClient, userLog.getUserID());
-
-				String pathYamlHome = "asset/richmenu-home.yml";
-				String pathImageHome = "asset/richmenu-home.jpg";
-				RichMenuHelper.createRichMenu(lineMessagingClient, pathYamlHome, pathImageHome, userLog.getUserID());
-
 				break;
 			}
 			case "ไม่ใช่": {
