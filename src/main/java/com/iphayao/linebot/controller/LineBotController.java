@@ -156,9 +156,6 @@ public class LineBotController {
 		String text = content.getText();
 		ModelMapper modelMapper = new ModelMapper();
 		// userLog.setEmpCode(text.toString());
-		userLog.setFoodName(text.toString());
-		String empName = lineRepo.findEmp(text.toString());
-		String foodName = lineRepo.findFoods(text.toString());
 
 		if (userLog.getStatusBot().equals(status.DEFAULT)) {
 			switch (text) {
