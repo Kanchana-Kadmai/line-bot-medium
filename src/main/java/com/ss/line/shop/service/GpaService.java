@@ -49,35 +49,30 @@ public class GpaService {
 
 	public ArrayList<Map<String, Object>> searchGpa(UserLog userLog) {
 		ArrayList<Map<String, Object>> result = new ArrayList<Map<String, Object>>();
-		ArrayList<Map<String, Object>> account_line = new ArrayList<Map<String, Object>>();
-		ArrayList<Map<String, Object>> student_name = new ArrayList<Map<String, Object>>();
 		try {
 			jdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
 			StringBuilder sql1 = new StringBuilder();
-			StringBuilder sql2 = new StringBuilder();
 
 			sql1 = new StringBuilder();
-			sql1.append(" SELECT line_id ");
-			sql1.append(" FROM public.db_student  ");
-			sql1.append(" WHERE line_id::CHARACTER = :lineId ");
+			sql1.append(" SELECT ar.gdp_link ");
+			sql1.append(" FROM db_academic_result ar  ");
+			sql1.append(" JOIN db_student st ON (st.student_id = ar.student_id) ");
+			sql1.append(" WHERE st.line_id = :lineId ");
 
 			MapSqlParameterSource parameter1 = new MapSqlParameterSource();
 			parameter1.addValue("lineId", userLog.getUserID());
-			account_line = (ArrayList<Map<String, Object>>) jdbcTemplate.queryForList(sql1.toString(), parameter1);
+			result = (ArrayList<Map<String, Object>>) jdbcTemplate.queryForList(sql1.toString(), parameter1);
 
-			int size = student_name.size();
+			int size = result.size();
 			if (size > 0) {
-				String detail = "ชื่อ " + student_name.get(0).get("student_name") + " ใช่หรือไม่";
-				ConfirmTemplate confirmTemplate = new ConfirmTemplate(detail, new MessageAction("ใช่", "ใช่"),
-						new MessageAction("ไม่ใช่", "ไม่ใช่"));
-				TemplateMessage templateMessage = new TemplateMessage("ยืนยัน", confirmTemplate);
-
-				LineBotController.push(userLog.getUserID(), Arrays.asList(templateMessage));
-				userLog.setStatusBot(status.Comfrim);
+				String detail = "";
+				detail+=(String)result.get(0).get("gdp_link");
+				LineBotController.push(userLog.getUserID(), Arrays.asList(new TextMessage(detail)));
+				userLog.setStatusBot(status.DEFAULT);
 
 			} else {
 				LineBotController.push(userLog.getUserID(),
-						Arrays.asList(new TextMessage("ไม่มีรหัสนี้ในระบบ\n กรุณากดลงทะเบียนอีกครั้ง ")));
+						Arrays.asList(new TextMessage("ไม่มีการบันทึกเกรดเฉลี่ย กรุณาติดต่อเจ้าหน้าที่ ")));
 				userLog.setStatusBot(status.DEFAULT);
 			}
 
