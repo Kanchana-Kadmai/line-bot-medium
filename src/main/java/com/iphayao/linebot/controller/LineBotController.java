@@ -167,6 +167,7 @@ public class LineBotController {
 				break;
 			}
 			case "ลงทะเบียน": {
+				lineRepo.register(userLog);
 				this.reply(replyToken,
 						Arrays.asList(new TextMessage("กรุณากรอก รหัสพนักงาน"+ "\n" + "เพื่อยืนยันตัวตนค่ะ")));
 				userLog.setStatusBot(status.FINDEMP);
