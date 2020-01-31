@@ -116,7 +116,7 @@ public class MyAccountService {
 		return result;
 	}
 
-	public ArrayList<Map<String, Object>> updateLineSutudent(final UserLog userLog, final String studentId) {
+	public ArrayList<Map<String, Object>> updateLineSutudent(final UserLog userLog) {
 		final ArrayList<Map<String, Object>> result = new ArrayList<Map<String, Object>>();
 		ArrayList<Map<String, Object>> account_line = new ArrayList<Map<String, Object>>();
 		try {
@@ -130,8 +130,9 @@ public class MyAccountService {
 
 			final MapSqlParameterSource parameter1 = new MapSqlParameterSource();
 			parameter1.addValue("lineId", userLog.getUserID());
-			parameter1.addValue("studentId", studentId);
-			System.out.println("-----------------parameter1-------------"+parameter1);
+			parameter1.addValue("studentId", userLog.getStudentId());
+			System.out.println("-----------------lineId-------------"+userLog.getUserID());
+			System.out.println("-----------------studentId-------------"+userLog.getStudentId());
 			account_line = (ArrayList<Map<String, Object>>) jdbcTemplate.queryForList(sql1.toString(), parameter1);
 
 			// final int size_line = account_line.size();

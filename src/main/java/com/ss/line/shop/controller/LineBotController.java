@@ -164,7 +164,7 @@ public class LineBotController {
 		} else if (userLog.getStatusBot().equals(status.Comfrim)) {
 			switch (text) {
 			case "ใช่": {
-				myAccountService.updateLineSutudent(userLog, userLog.getStudentId());
+				myAccountService.updateLineSutudent(userLog);
 				this.reply(replyToken, Arrays.asList(new TextMessage("ลงทะเบียนสำเร็จ ")));
 				userLog.setStatusBot(status.DEFAULT);
 
@@ -188,6 +188,7 @@ public class LineBotController {
 			}
 			default:
 				this.push(userLog.getUserID(), Arrays.asList(new TextMessage("ไม่เข้าใจคำสั่ง")));
+				userLog.setStatusBot(status.DEFAULT);
 			}
 		} else {
 			this.push(event.getSource().getSenderId(), Arrays.asList(new TextMessage("บอทหลับอยู่")));
