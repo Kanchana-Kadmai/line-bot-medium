@@ -55,7 +55,8 @@ public class BusyTeacherService {
 			sql1 = new StringBuilder();
 			sql1.append(" SELECT th.teacher_name ");
 			sql1.append("      , stu.status_desc_tha ");
-			sql1.append("      , bt.start_leave, bt.end_leave ");
+			sql1.append("      , to_char(bt.start_leave,'dd/mm/yyyy') as start_leave");
+			sql1.append("      , to_char(bt.end_leave,'dd/mm/yyyy') as end_leave");
 			sql1.append("      , rth.teacher_name as teacher_re");
 			sql1.append("      , bt.remark ");
 			sql1.append(" FROM su_busy_teacher bt ");
