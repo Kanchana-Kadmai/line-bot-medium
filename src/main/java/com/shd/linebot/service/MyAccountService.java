@@ -1,5 +1,9 @@
 package com.shd.linebot.service;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.Statement;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -70,15 +74,33 @@ public class MyAccountService {
 		ArrayList<Map<String, Object>> account_line = new ArrayList<Map<String, Object>>();
 		ArrayList<Map<String, Object>> student_name = new ArrayList<Map<String, Object>>();
 		try {
-			System.out.println(dataSource.toString());			
+			System.out.println(dataSource.toString());
 			jdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
 			StringBuilder sql1 = new StringBuilder();
 			StringBuilder sql2 = new StringBuilder();
 
+			Connection connect = null;
+			ResultSet rec = null;
+			Statement st = null;
+			try {
+				Class.forName("com.mysql.jdbc.Driver");
+				connect = DriverManager
+						.getConnection("jdbc:mysql://localhost/test?user=root&password=&serverTimezone=UTC");
+				st = connect.createStatement();
+				String sql = null;
+				sql = " SELECT line_id FROM db_student ";
+				rec = st.executeQuery(sql);
+				while (rec.next()) {
+					System.out.println(rec.getString("line_id"));
+				}
+			} catch (Exception ex) {
+				ex.printStackTrace();
+			}
+
 			sql1 = new StringBuilder();
 			sql1.append(" SELECT line_id ");
 			sql1.append(" FROM db_student  ");
-			sql1.append(" WHERE line_id::CHARACTER = :lineId ");
+			sql1.append(" WHERE line_id = :lineId ");
 			System.out.println();
 			MapSqlParameterSource parameter1 = new MapSqlParameterSource();
 			parameter1.addValue("lineId", userLog.getUserID());
