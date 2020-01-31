@@ -64,7 +64,7 @@ public class MyAccountService {
 
 	// softtradedb.\"TrainSQL\".
 	public ArrayList<Map<String, Object>> searchName(final UserLog userLog, final String studentId) {
-		final ArrayList<Map<String, Object>> result = new ArrayList<Map<String, Object>>();
+		ArrayList<Map<String, Object>> result = new ArrayList<Map<String, Object>>();
 		ArrayList<Map<String, Object>> account_line = new ArrayList<Map<String, Object>>();
 		ArrayList<Map<String, Object>> student_name = new ArrayList<Map<String, Object>>();
 		try {
@@ -128,7 +128,6 @@ public class MyAccountService {
 
 	public ArrayList<Map<String, Object>> updateLineSutudent(final UserLog userLog) {
 		final ArrayList<Map<String, Object>> result = new ArrayList<Map<String, Object>>();
-		ArrayList<Map<String, Object>> account_line = new ArrayList<Map<String, Object>>();
 		try {
 			jdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
 			StringBuilder sql1 = new StringBuilder();
@@ -139,11 +138,9 @@ public class MyAccountService {
 			sql1.append(" WHERE student_id=:studentId ");
 
 			final MapSqlParameterSource parameter1 = new MapSqlParameterSource();
-			System.out.println(userLog.getUserID());
-			System.out.println(userLog.getStudentId());
 			parameter1.addValue("lineId", userLog.getUserID());
 			parameter1.addValue("studentId", userLog.getStudentId());
-			account_line = (ArrayList<Map<String, Object>>) jdbcTemplate.queryForList(sql1.toString(), parameter1);
+			jdbcTemplate.update(sql1.toString(), parameter1);
 
 			RichMenuHelper.deleteRichMenu(lineMessagingClient, userLog.getUserID());
 
