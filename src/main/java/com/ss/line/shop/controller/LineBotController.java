@@ -124,9 +124,9 @@ public class LineBotController {
 			case "New": {
 				RichMenuHelper.deleteRichMenu(lineMessagingClient, userLog.getUserID());
 
-				String pathYamlHome = "asset/richmenu-register.yml";
-				String pathImageHome = "asset/richmenu-register.jpg";
-				RichMenuHelper.createRichMenu(lineMessagingClient, pathYamlHome, pathImageHome, userLog.getUserID());
+				// String pathYamlHome = "asset/richmenu-register.yml";
+				// String pathImageHome = "asset/richmenu-register.jpg";
+				// RichMenuHelper.createRichMenu(lineMessagingClient, pathYamlHome, pathImageHome, userLog.getUserID());
 				break;
 			}
 			case "แจ้งขอลา": {

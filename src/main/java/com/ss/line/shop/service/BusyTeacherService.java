@@ -63,7 +63,7 @@ public class BusyTeacherService {
 			sql1.append(" JOIN db_teacher th ON (th.teacher_id = bt.teacher_id) ");
 			sql1.append(" JOIN db_teacher rth ON (rth.teacher_id = bt.teacher_re) ");
 			sql1.append(" JOIN db_status stu ON (stu.table_name='busy_teacher' AND stu.column_name='busyStatus') ");
-			
+
 			MapSqlParameterSource parameter1 = new MapSqlParameterSource();
 			result = (ArrayList<Map<String, Object>>) jdbcTemplate.queryForList(sql1.toString(), parameter1);
 
@@ -72,13 +72,13 @@ public class BusyTeacherService {
 			if (size > 0) {
 				String detail = "";
 				for (x = 0; x < size; x++) {
-					detail += "คุณครู " + (String) result.get(x).get("teacher_name")
-							+ " "+ (String) result.get(x).get("status_desc_tha") + " \n" 
-							+ "ตั้งแต่วันที่ "+ (String) result.get(x).get("start_leave") + " ถึงวันที่ "
-							+ (String) result.get(x).get("end_leave") + "\n คุณครูสอนแทน คุณครู "
-							+ (String) result.get(x).get("teacher_re") + " \n" + result.get(x).get("remark");
-							LineBotController.push(userLog.getUserID(), Arrays.asList(new TextMessage(detail)));
+					detail += (String) "คุณครู " + result.get(x).get("teacher_name") + " "
+							+ result.get(x).get("status_desc_tha") + " \n" + "ตั้งแต่วันที่ "
+							+ result.get(x).get("start_leave") + " ถึงวันที่ " + result.get(x).get("end_leave")
+							+ "\n คุณครูสอนแทน คุณครู " + result.get(x).get("teacher_re") + " \n"
+							+ result.get(x).get("remark");
 				}
+				LineBotController.push(userLog.getUserID(), Arrays.asList(new TextMessage(detail)));
 
 			} else {
 				LineBotController.push(userLog.getUserID(), Arrays.asList(new TextMessage("วันนี้ไม่มีอาจารย์ลา ")));
