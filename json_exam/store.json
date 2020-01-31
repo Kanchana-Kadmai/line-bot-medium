@@ -1,0 +1,41 @@
+{
+    "place_id": 1,
+    "place_name": "โรงพยาบาล จุฬาลงกรณ์",
+    "orders": [
+        {
+            "date": "1546275600000",
+            "round_id": 1,
+            "round": "10.00 - 11.00",
+            "recive_method_id": 0,
+            "address": {
+                "address_id": 1,
+                "name": "",
+                "tel": "",
+                "place_id": 1,
+                "place_name": "โรงพยาบาล จุฬาลงกรณ์",
+                "site_id": 1,
+                "site_name": "ศูนย์ A",
+                "building_id": 1,
+                "building_name": "ตึก 1",
+                "floor_id": 1,
+                "floor_name": "ชั้น 1",
+                "room": "ห้อง 213"
+            },
+            "items": [
+                {
+                    "item_id": 1,
+                    "item_name": "ข้าวผัด",
+                    "site_id": 1,
+                    "site_name": "ศูนย์ A",
+                    "store_id": 1,
+                    "store_name": "ร้าน 01",
+                    "price": 40,
+                    "amount": 3,
+                    "total_amount": 120
+                }
+            ],
+            "order_amount": 120,
+            "delivery_charge": 10
+        }
+    ]
+}

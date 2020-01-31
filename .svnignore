@@ -15,8 +15,6 @@
 *.iws
 *.iml
 *.ipr
-/.vscode/
-/.mvn/
 
 ### NetBeans ###
 /nbproject/private/

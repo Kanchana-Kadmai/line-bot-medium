@@ -1,3 +1,7 @@
+server:
+ port: 8080
+ servlet:
+  contextPath: /api
 
 line.bot:
   channel-token: 'if2anSp7EwcriyIrM7PVUd9AmU5KjcrwMJ2VvunRRDPGc3Ph89Y844/+Z8HitHk8b0qxp18uZvWRECj4TSX1uUWu/XE8PnLSNod2dNbHsa7WFzi6iluVGn87lG635pyEUsTEZeZtENKllNHgL9p6EAdB04t89/1O/w1cDnyilFU='
@@ -7,7 +11,7 @@ line.bot:
 spring.datasource:
   platform: postgres
   driverClassName: org.postgresql.Driver
-  url: jdbc:postgresql://raja.db.elephantsql.com:5432/mbsqvzky?sslmode=disable
+  url: jdbc:postgresql://raja.db.elephantsql.com:5432/mbsqvzky
   username: mbsqvzky
   password: TR-Sgyxa6dcNFg4vM_o0dSzAOl_XpXdE
 

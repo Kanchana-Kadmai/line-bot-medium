@@ -3,7 +3,7 @@ size:
   height: 1686
 selected: false
 name: Home
-chatBarText: 'กรุณา เลือกเมนูคะ'
+chatBarText: 'เมนู'
 areas:
 -
   bounds:
@@ -13,8 +13,8 @@ areas:
     height: 843
   action:
     type: message
-    label: profile
-    text: 'profile'
+    label: table
+    text: 'ดูตารางเรียน'
 -
   bounds:
     x: 834
@@ -23,8 +23,8 @@ areas:
     height: 843
   action:
     type: message
-    label: echo
-    text: 'Flex Restaurant'
+    label: gdp
+    text: 'ดูผลการเรียน'
 -
   bounds:
     x: 1667
@@ -33,8 +33,8 @@ areas:
     height: 843
   action:
     type: message
-    label: more
-    text: 'Flex Receipt'
+    label: busyTeacher
+    text: 'คุณครูลา'
 -
   bounds:
     x: 0
@@ -43,8 +43,8 @@ areas:
     height: 843
   action:
     type: message
-    label: unlink
-    text: 'carousel'
+    label: leave
+    text: 'แจ้งขอลา'
 -
   bounds:
     x: 834
@@ -54,4 +54,4 @@ areas:
   action:
     type: message
     label: unlink
-    text: 'สอบถาม ข้อมูลทั่วไป'
+    text: 'Flex Back'
