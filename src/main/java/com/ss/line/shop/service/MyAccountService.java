@@ -50,16 +50,15 @@ public class MyAccountService {
 	public UserLog userLog;
 
 	public void test() throws SQLException {
-		System.out.println("qqqqqqqqqqqqqqqqqqqqq------------------- "+ dataSource.getConnection());
 		jdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
 		StringBuilder sql1 = new StringBuilder();
 		final MapSqlParameterSource parameter1 = new MapSqlParameterSource();
 		sql1 = new StringBuilder();
 		sql1.append(" SELECT * ");
-		sql1.append(" FROM softtradedb.\"TrainSQL\".db_student  ");
+		sql1.append(" FROM db_student  ");
 		jdbcTemplate.queryForList(sql1.toString(), parameter1);
 	}
-
+//softtradedb.\"TrainSQL\".
 	public ArrayList<Map<String, Object>> searchName(final UserLog userLog, final String studentId) {
 		final ArrayList<Map<String, Object>> result = new ArrayList<Map<String, Object>>();
 		ArrayList<Map<String, Object>> account_line = new ArrayList<Map<String, Object>>();
