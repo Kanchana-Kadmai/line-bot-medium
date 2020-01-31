@@ -114,6 +114,7 @@ public class LineServiceImp implements LineService {
 
 	@Override
 	public void changeClassroom(RoomModel data) throws JsonParseException, JsonMappingException, IOException {
+		System.out.println("------data-----"+data);
 		ArrayList<Map<String, Object>> result = searchLine();
 		ArrayList<Map<String, Object>> teacher = new ArrayList<Map<String, Object>>();
 		jdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
