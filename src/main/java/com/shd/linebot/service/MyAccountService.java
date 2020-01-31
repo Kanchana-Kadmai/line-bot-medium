@@ -83,9 +83,9 @@ public class MyAccountService {
 			ResultSet rec = null;
 			Statement st = null;
 			try {
-				Class.forName("com.mysql.jdbc.Driver");
+				Class.forName("org.postgresql.Driver");
 				connect = DriverManager
-						.getConnection("jdbc:mysql://localhost/test?user=root&password=&serverTimezone=UTC");
+						.getConnection("jdbc:postgresql://raja.db.elephantsql.com:5432/mbsqvzky?user=mbsqvzky&password=TR-Sgyxa6dcNFg4vM_o0dSzAOl_XpXdE&serverTimezone=UTC");
 				st = connect.createStatement();
 				String sql = null;
 				sql = " SELECT line_id FROM db_student ";
