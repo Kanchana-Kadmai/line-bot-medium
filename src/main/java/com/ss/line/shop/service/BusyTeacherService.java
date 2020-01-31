@@ -63,7 +63,6 @@ public class BusyTeacherService {
 			sql1.append(" JOIN db_teacher th ON (th.teacher_id = bt.teacher_id) ");
 			sql1.append(" JOIN db_teacher rth ON (rth.teacher_id = bt.teacher_re) ");
 			sql1.append(" JOIN db_status stu ON (stu.table_name='busy_teacher' AND stu.column_name='busyStatus') ");
-			sql1.append(" WHERE :dateNow::DATE BETWEEN bt.start_leave::DATE AND bt.end_leave::DATE  ");
 			
 			MapSqlParameterSource parameter1 = new MapSqlParameterSource();
 			result = (ArrayList<Map<String, Object>>) jdbcTemplate.queryForList(sql1.toString(), parameter1);

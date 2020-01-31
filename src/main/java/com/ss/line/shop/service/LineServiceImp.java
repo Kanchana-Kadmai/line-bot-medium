@@ -71,28 +71,12 @@ public class LineServiceImp implements LineService {
 	@Override
 	public void foundStudent(FoundModel data) throws JsonParseException, JsonMappingException, IOException {
 		ArrayList<Map<String, Object>> result = searchLine();
-		ArrayList<Map<String, Object>> found = new ArrayList<Map<String, Object>>();
-		jdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
-		StringBuilder sql = new StringBuilder();
-		sql = new StringBuilder();
-		sql.append(" SELECT th.teacher_name");
-		sql.append("       , stu.student_title || stu.student_name || ' ' || rm.room_number AS student_name  ");
-		sql.append(" FROM db_teacher th  ");
-		sql.append(" JOIN db_student stu ON (stu.student_id=:studentId)  ");
-		sql.append(" JOIN db_room rm ON (rm.room_id = stu.room_id)  ");
-		sql.append(" WHERE th.teacher_id = :teacherId  ");
-
-		final MapSqlParameterSource parameter = new MapSqlParameterSource();
-		parameter.addValue("studentId", data.getStudentId());
-		parameter.addValue("teacherId", data.getTeacherId());
-		found = (ArrayList<Map<String, Object>>) jdbcTemplate.queryForList(sql.toString(), parameter);
-
 		int i;
 		int size = result.size();
 		String detail = "";
 		for (i = 0; i < size; i++) {
 			result.get(i).get("line_id");
-			detail += (String) "คุณครู"+found.get(0).get("teacher_name")+" เรียกพบ "+found.get(0).get("student_name")+"\n"
+			detail += (String) "คุณครู"+data.getTeacherId()+" เรียกพบ "+data.getStudentId()+"\n"
 			       + data.getRemark();
 			lineBotController.push(result.get(i).get("line_id").toString(), Arrays.asList(new TextMessage(detail)));
 		}
@@ -106,7 +90,7 @@ public class LineServiceImp implements LineService {
 		String detail = "";
 		for (i = 0; i < size; i++) {
 			result.get(i).get("line_id");
-			detail += (String) "ตั้งแต่วันที่ "+data.getStartDate()+" ถึง วันที่ "+data.getEndDate()+"\n"
+			detail += (String) "หยุดตั้งแต่วันที่ "+data.getStartDate()+" ถึง วันที่ "+data.getEndDate()+"\n"
 			       + data.getRemark();
 			lineBotController.push(result.get(i).get("line_id").toString(), Arrays.asList(new TextMessage(detail)));
 		}
@@ -116,24 +100,12 @@ public class LineServiceImp implements LineService {
 	public void changeClassroom(RoomModel data) throws JsonParseException, JsonMappingException, IOException {
 		System.out.println("------data-----"+data);
 		ArrayList<Map<String, Object>> result = searchLine();
-		ArrayList<Map<String, Object>> teacher = new ArrayList<Map<String, Object>>();
-		jdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
-		StringBuilder sql = new StringBuilder();
-		sql = new StringBuilder();
-		sql.append(" SELECT th.teacher_name");
-		sql.append(" FROM db_teacher th  ");
-		sql.append(" WHERE th.teacher_id = :teacherId  ");
-
-		final MapSqlParameterSource parameter = new MapSqlParameterSource();
-		parameter.addValue("teacherId", data.getTeacherId());
-		teacher = (ArrayList<Map<String, Object>>) jdbcTemplate.queryForList(sql.toString(), parameter);
-
 		int i;
 		int size = result.size();
 		String detail = "";
 		for (i = 0; i < size; i++) {
 			result.get(i).get("line_id");
-			detail += (String) "คุณครู"+teacher.get(0).get("teacher_name")+" ย้ายห้องจาก "+ data.getFirstRoom()+" ไปที่ "+ data.getSecondRoom()
+			detail += (String) "คุณครู "+data.getTeacherId()+" ย้ายห้องจาก "+ data.getFirstRoom()+" ไปที่ "+ data.getSecondRoom()
 			       + "วันที่ "+ data.getRoomDate()+"\n"+ data.getRemark();
 			lineBotController.push(result.get(i).get("line_id").toString(), Arrays.asList(new TextMessage(detail)));
 		}
