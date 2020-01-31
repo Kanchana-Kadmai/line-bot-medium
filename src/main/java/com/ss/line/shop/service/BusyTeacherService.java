@@ -3,6 +3,8 @@ package com.ss.line.shop.service;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Map;
+import java.time.*;
+import java.time.format.DateTimeFormatter;
 
 import javax.sql.DataSource;
 
@@ -62,8 +64,12 @@ public class BusyTeacherService {
 			sql1.append(" JOIN db_status stu ON (stu.table_name='busy_teacher' AND stu.column_name='busyStatus') ");
 			sql1.append(" WHERE :dateNow::DATE BETWEEN start_leave::DATE AND end_leave::DATE ");
 
+			LocalDate localDate = LocalDate.now();// For reference
+			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-mm-dd");
+			String formattedString = localDate.format(formatter);
+
 			MapSqlParameterSource parameter1 = new MapSqlParameterSource();
-			parameter1.addValue("dateNow", java.time.LocalDate.now().toString());
+			parameter1.addValue("dateNow", formattedString);
 			result = (ArrayList<Map<String, Object>>) jdbcTemplate.queryForList(sql1.toString(), parameter1);
 
 			int x;
