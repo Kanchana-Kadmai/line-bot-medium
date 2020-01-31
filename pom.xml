@@ -81,12 +81,6 @@
 			<version>1.6</version>
 		</dependency>
 
-		<!-- For Oauth2 setting. -->
-		<dependency>
-			<groupId>org.springframework.security.oauth.boot</groupId>
-			<artifactId>spring-security-oauth2-autoconfigure</artifactId>
-			<version>2.0.4.RELEASE</version>
-		</dependency>
 
 		<!-- For lombok setting. -->
 		<dependency>
