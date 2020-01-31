@@ -7,7 +7,7 @@ line.bot:
 spring.datasource:
   platform: postgres
   driverClassName: org.postgresql.Driver
-  url: jdbc:postgresql://SG-SHD-423-pgsql-master.servers.mongodirector.com:5432/postgres?currentSchema=public
-  username: sgpostgres
-  password: X7ah3Jx_k81zLrTe
+  url: jdbc:postgresql://raja.db.elephantsql.com:5432/mbsqvzky?currentSchema=public
+  username: mbsqvzky
+  password: TR-Sgyxa6dcNFg4vM_o0dSzAOl_XpXdE
  
