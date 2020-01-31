@@ -1,0 +1,17 @@
+size:
+  width: 2500
+  height: 1686
+selected: false
+name: Register
+chatBarText: 'ลงทะเบียน'
+areas:
+-
+  bounds:
+    x: 0
+    y: 1686
+    width: 2500
+    height: 1686
+  action:
+    type: message
+    label: Register
+    uri: 'ลงทะเบียน'
