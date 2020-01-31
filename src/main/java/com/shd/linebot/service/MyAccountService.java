@@ -95,7 +95,7 @@ public class MyAccountService {
 				account_line = (ArrayList<Map<String, Object>>) jdbcTemplate.queryForList(sql1.toString(), parameter1);
 
 				// while (rec.next()) {
-				// System.out.println(rec.getString("line_id"));
+				System.out.println(rec.getString(sql1.toString()));
 				// }
 			} catch (Exception ex) {
 				ex.printStackTrace();
