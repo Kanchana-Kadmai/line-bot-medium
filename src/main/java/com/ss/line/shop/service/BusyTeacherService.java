@@ -73,11 +73,11 @@ public class BusyTeacherService {
 				for (x = 0; x < size; x++) {
 					detail += "คุณครู " + (String) result.get(x).get("teacher_name")
 							+ (String) result.get(x).get("status_desc_tha") + " \n" + "ตั้งแต่วันที่ "
-							+ (String) result.get(x).get("start_leave") + " ถึงวันที่" + (String) result.get(x).get("end_leave")
-							+ "คุณครูสอนแทน คุณครู " + (String) result.get(x).get("teacher_re")+ " \n"
-							+ result.get(x).get("remark") + "\n\n" ;
+							+ (String) result.get(x).get("start_leave") + " ถึงวันที่"
+							+ (String) result.get(x).get("end_leave") + "คุณครูสอนแทน คุณครู "
+							+ (String) result.get(x).get("teacher_re") + " \n" + result.get(x).get("remark") + "\n\n";
 				}
-
+				System.out.println(detail);
 				LineBotController.push(userLog.getUserID(), Arrays.asList(new TextMessage(detail)));
 
 			} else {
