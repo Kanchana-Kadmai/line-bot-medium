@@ -57,7 +57,7 @@ public class GpaService {
 			sql1.append(" SELECT ar.gdp_link ");
 			sql1.append(" FROM db_academic_result ar  ");
 			sql1.append(" JOIN db_student st ON (st.student_id = ar.student_id) ");
-			sql1.append(" WHERE st.line_id = :lineId ");
+			sql1.append(" WHERE st.line_id::VARCHAR = :lineId ");
 
 			MapSqlParameterSource parameter1 = new MapSqlParameterSource();
 			parameter1.addValue("lineId", userLog.getUserID());

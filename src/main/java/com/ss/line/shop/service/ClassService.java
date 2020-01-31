@@ -43,7 +43,7 @@ public class ClassService {
 			sql1.append(" SELECT rm.subject_table ");
 			sql1.append(" FROM db_room rm  ");
 			sql1.append(" JOIN db_student st ON (rm.room_id = st.room_id)  ");
-			sql1.append(" WHERE st.line_id::CHARACTER = :lineId ");
+			sql1.append(" WHERE st.line_id::VARCHAR = :lineId ");
 
 			MapSqlParameterSource parameter1 = new MapSqlParameterSource();
 			parameter1.addValue("lineId", userLog.getUserID());

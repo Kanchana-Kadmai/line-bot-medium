@@ -51,11 +51,16 @@ public class BusyTeacherService {
 			StringBuilder sql1 = new StringBuilder();
 
 			sql1 = new StringBuilder();
-			sql1.append(" SELECT t.teacher_name ");
-			sql1.append("      , bt.remark, bt.start_leave, bt.end_leave ");
-			sql1.append(" FROM public.db_teacher t ");
-			sql1.append(" JOIN su_busy_teacher bt ON bt.teacher_id = t.teacher_id ");
-			sql1.append(" WHERE ':dateNow'::DATE BETWEEN start_leave::DATE AND end_leave::DATE ");
+			sql1.append(" SELECT th.teacher_name ");
+			sql1.append("      , stu.status_desc_tha ");
+			sql1.append("      , bt.start_leave, bt.end_leave ");
+			sql1.append("      , rth.teacher_name as teacher_re");
+			sql1.append("      , bt.remark ");
+			sql1.append(" FROM su_busy_teacher bt ");
+			sql1.append(" JOIN db_teacher th ON (th.teacher_id = bt.teacher_id) ");
+			sql1.append(" JOIN db_teacher rth ON (rth.teacher_id = bt.teacher_re) ");
+			sql1.append(" JOIN db_status stu ON (stu.table_name='busy_teacher' AND stu.column_name='busyStatus') ");
+			sql1.append(" WHERE :dateNow::DATE BETWEEN start_leave::DATE AND end_leave::DATE ");
 
 			MapSqlParameterSource parameter1 = new MapSqlParameterSource();
 			parameter1.addValue("dateNow", java.time.LocalDate.now());
@@ -66,9 +71,11 @@ public class BusyTeacherService {
 			if (size > 0) {
 				String detail = "";
 				for (x = 0; x < size; x++) {
-					detail += "คุณครู " + (String) result.get(x).get("teacher_name") + " \n"
-							+ result.get(x).get("remark") + "\n" + "ตั้งแต่วันที่ " + result.get(x).get("start_leave")
-							+ " ถึงวันที่" + result.get(x).get("end_leave") + " \n";
+					detail += "คุณครู " + (String) result.get(x).get("teacher_name")
+							+ (String) result.get(x).get("status_desc_tha") + " \n" + "ตั้งแต่วันที่ "
+							+ (String) result.get(x).get("start_leave") + " ถึงวันที่" + (String) result.get(x).get("end_leave")
+							+ "คุณครูสอนแทน คุณครู " + (String) result.get(x).get("teacher_re")+ " \n"
+							+ result.get(x).get("remark") + "\n\n" ;
 				}
 
 				LineBotController.push(userLog.getUserID(), Arrays.asList(new TextMessage(detail)));
