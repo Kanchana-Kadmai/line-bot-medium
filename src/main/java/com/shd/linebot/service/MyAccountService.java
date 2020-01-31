@@ -7,6 +7,7 @@ import java.sql.Statement;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Properties;
@@ -38,6 +39,7 @@ import com.linecorp.bot.model.message.TemplateMessage;
 import com.linecorp.bot.model.message.TextMessage;
 import com.linecorp.bot.model.message.template.ConfirmTemplate;
 import com.shd.linebot.controller.LineBotController;
+import com.shd.linebot.model.UserLineModel;
 import com.shd.linebot.model.UserLog;
 import com.shd.linebot.model.UserLog.status;
 import com.shd.linebot.utils.BeanUtils;
@@ -79,6 +81,7 @@ public class MyAccountService {
 			StringBuilder sql1 = new StringBuilder();
 			StringBuilder sql2 = new StringBuilder();
 
+			List<UserLineModel> userLines = new ArrayList<UserLineModel>();
 			Connection connect = null;
 			ResultSet rec = null;
 			Statement st = null;
@@ -91,8 +94,12 @@ public class MyAccountService {
 				sql = " SELECT line_id FROM db_student";
 				rec = st.executeQuery(sql);
 				while (rec.next()) {
+					UserLineModel userLine = new UserLineModel();
+					userLine.setLineId(rec.getString("line_id"));
 					System.out.println(rec.getString("line_id"));
+					userLines.add(userLine);
 				}
+				System.out.println(userLines.toString());
 			} catch (Exception ex) {
 				ex.printStackTrace();
 			}

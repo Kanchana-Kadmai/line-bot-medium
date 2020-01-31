@@ -5,7 +5,7 @@ import java.security.Timestamp;
 import lombok.Data;
 
 @Data
-public class UserLine {
+public class UserLineModel {
 	
 	private String lineId;
 	private String studentName;
