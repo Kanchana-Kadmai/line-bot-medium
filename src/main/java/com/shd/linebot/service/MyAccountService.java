@@ -88,7 +88,7 @@ public class MyAccountService {
 						.getConnection("jdbc:postgresql://raja.db.elephantsql.com:5432/mbsqvzky?user=mbsqvzky&password=TR-Sgyxa6dcNFg4vM_o0dSzAOl_XpXdE&serverTimezone=UTC");
 				st = connect.createStatement();
 				String sql = null;
-				sql = " SELECT line_id FROM db_student WHERE line_id = ''"+userLog.getUserID()+"'";
+				sql = " SELECT line_id FROM public.db_student WHERE line_id = ''"+userLog.getUserID()+"'";
 				rec = st.executeQuery(sql);
 				while (rec.next()) {
 					System.out.println(rec.getString("line_id"));
