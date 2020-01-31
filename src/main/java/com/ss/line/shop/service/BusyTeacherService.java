@@ -63,7 +63,7 @@ public class BusyTeacherService {
 			sql1.append(" WHERE :dateNow::DATE BETWEEN start_leave::DATE AND end_leave::DATE ");
 
 			MapSqlParameterSource parameter1 = new MapSqlParameterSource();
-			parameter1.addValue("dateNow", java.time.LocalDate.now());
+			parameter1.addValue("dateNow", java.time.LocalDate.now().toString());
 			result = (ArrayList<Map<String, Object>>) jdbcTemplate.queryForList(sql1.toString(), parameter1);
 
 			int x;
