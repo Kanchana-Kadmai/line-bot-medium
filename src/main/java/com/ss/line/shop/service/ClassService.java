@@ -64,9 +64,9 @@ public class ClassService {
 
 			MapSqlParameterSource parameter1 = new MapSqlParameterSource();
 			parameter1.addValue("lineId", userLog.getUserID());
-			account_line = (ArrayList<Map<String, Object>>) jdbcTemplate.queryForList(sql1.toString(), parameter1);
+			result = (ArrayList<Map<String, Object>>) jdbcTemplate.queryForList(sql1.toString(), parameter1);
 
-			int size = student_name.size();
+			int size = result.size();
 			if (size > 0) {
 				String detail = "ชื่อ " + student_name.get(0).get("student_name") + " ใช่หรือไม่";
 				ConfirmTemplate confirmTemplate = new ConfirmTemplate(detail, new MessageAction("ใช่", "ใช่"),

@@ -11,7 +11,7 @@ line.bot:
 spring.datasource:
   platform: postgres
   driverClassName: org.postgresql.Driver
-  url: jdbc:postgresql://raja.db.elephantsql.com:5432/mbsqvzky
-  username: mbsqvzky
-  password: TR-Sgyxa6dcNFg4vM_o0dSzAOl_XpXdE
+  url: jdbc:postgresql://52.77.234.86:31281/softtradedb?currentSchema=TrainSQL
+  username: softtrade_dev
+  password: bentturtle33
 
