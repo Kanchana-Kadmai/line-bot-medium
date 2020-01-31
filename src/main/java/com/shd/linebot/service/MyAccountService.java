@@ -91,12 +91,11 @@ public class MyAccountService {
 						.getConnection("jdbc:postgresql://raja.db.elephantsql.com:5432/mbsqvzky?user=mbsqvzky&password=TR-Sgyxa6dcNFg4vM_o0dSzAOl_XpXdE&serverTimezone=UTC");
 				st = connect.createStatement();
 				String sql = null;
-				sql = " SELECT line_id FROM db_student";
+				sql = " SELECT line_id FROM db_student WHERE line_id='"+userLog.getUserID()+"'";
 				rec = st.executeQuery(sql);
 				while (rec.next()) {
 					UserLineModel userLine = new UserLineModel();
 					userLine.setLineId(rec.getString("line_id"));
-					System.out.println(rec.getString("line_id"));
 					userLines.add(userLine);
 				}
 				System.out.println(userLines.toString());
@@ -104,17 +103,17 @@ public class MyAccountService {
 				ex.printStackTrace();
 			}
 
-			sql1 = new StringBuilder();
-			sql1.append(" SELECT line_id ");
-			sql1.append(" FROM db_student  ");
-			sql1.append(" WHERE line_id = :lineId ");
-			System.out.println();
-			MapSqlParameterSource parameter1 = new MapSqlParameterSource();
-			parameter1.addValue("lineId", userLog.getUserID());
-			account_line = (ArrayList<Map<String, Object>>) jdbcTemplate.queryForList(sql1.toString(), parameter1);
+			// sql1 = new StringBuilder();
+			// sql1.append(" SELECT line_id ");
+			// sql1.append(" FROM db_student  ");
+			// sql1.append(" WHERE line_id = :lineId ");
+			// System.out.println();
+			// MapSqlParameterSource parameter1 = new MapSqlParameterSource();
+			// parameter1.addValue("lineId", userLog.getUserID());
+			// account_line = (ArrayList<Map<String, Object>>) jdbcTemplate.queryForList(sql1.toString(), parameter1);
 
-			int size_line = account_line.size();
-			if (size_line > 0) {
+			// int size_line = account_line.size();
+			if (userLines.size() > 0) {
 				LineBotController.push(userLog.getUserID(),
 						Arrays.asList(new TextMessage("คุณได้ลงทะเบียนไปแล้วเรียบร้อย กรุณาติดต่อผู้ดูแลระบบ ")));
 				userLog.setStatusBot(status.DEFAULT);
