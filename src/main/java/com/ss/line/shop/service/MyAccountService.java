@@ -1,5 +1,6 @@
 package com.ss.line.shop.service;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Map;
@@ -48,7 +49,8 @@ public class MyAccountService {
 
 	public UserLog userLog;
 
-	public void test() {
+	public void test() throws SQLException {
+		System.out.println("qqqqqqqqqqqqqqqqqqqqq------------------- "+ dataSource.getConnection());
 		jdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
 		StringBuilder sql1 = new StringBuilder();
 		final MapSqlParameterSource parameter1 = new MapSqlParameterSource();
