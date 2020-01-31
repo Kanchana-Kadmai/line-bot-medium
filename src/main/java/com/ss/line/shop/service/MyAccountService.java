@@ -7,6 +7,7 @@ import java.util.Map;
 
 import javax.sql.DataSource;
 
+import com.linecorp.bot.client.LineMessagingClient;
 import com.linecorp.bot.model.action.MessageAction;
 import com.linecorp.bot.model.message.TemplateMessage;
 import com.linecorp.bot.model.message.TextMessage;
@@ -41,6 +42,8 @@ public class MyAccountService {
 	}
 
 	@Autowired
+	private LineMessagingClient lineMessagingClient;
+	@Autowired
 	private DataSource dataSource;
 	private NamedParameterJdbcTemplate jdbcTemplate = null;
 
@@ -58,7 +61,8 @@ public class MyAccountService {
 		sql1.append(" FROM db_student  ");
 		jdbcTemplate.queryForList(sql1.toString(), parameter1);
 	}
-//softtradedb.\"TrainSQL\".
+
+	// softtradedb.\"TrainSQL\".
 	public ArrayList<Map<String, Object>> searchName(final UserLog userLog, final String studentId) {
 		final ArrayList<Map<String, Object>> result = new ArrayList<Map<String, Object>>();
 		ArrayList<Map<String, Object>> account_line = new ArrayList<Map<String, Object>>();
@@ -79,6 +83,12 @@ public class MyAccountService {
 
 			final int size_line = account_line.size();
 			if (size_line > 0) {
+				RichMenuHelper.deleteRichMenu(lineMessagingClient, userLog.getUserID());
+
+				String pathYamlHome = "asset/richmenu-home.yml";
+				String pathImageHome = "asset/richmenu-home.jpg";
+				RichMenuHelper.createRichMenu(lineMessagingClient, pathYamlHome, pathImageHome, userLog.getUserID());
+
 				lineBotController.push(userLog.getUserID(),
 						Arrays.asList(new TextMessage("คุณได้ลงทะเบียนไปแล้วเรียบร้อย กรุณาติดต่อผู้ดูแลระบบ ")));
 				userLog.setStatusBot(status.DEFAULT);
@@ -131,40 +141,46 @@ public class MyAccountService {
 			final MapSqlParameterSource parameter1 = new MapSqlParameterSource();
 			parameter1.addValue("lineId", userLog.getUserID());
 			parameter1.addValue("studentId", userLog.getStudentId());
-			System.out.println("-----------------lineId-------------"+userLog.getUserID());
-			System.out.println("-----------------studentId-------------"+userLog.getStudentId());
+			System.out.println("-----------------lineId-------------" + userLog.getUserID());
+			System.out.println("-----------------studentId-------------" + userLog.getStudentId());
 			account_line = (ArrayList<Map<String, Object>>) jdbcTemplate.queryForList(sql1.toString(), parameter1);
 
 			// final int size_line = account_line.size();
 			// if (size_line > 0) {
-			// 	lineBotController.push(userLog.getUserID(),
-			// 			Arrays.asList(new TextMessage("คุณได้ลงทะเบียนไปแล้วเรียบร้อย กรุณาติดต่อผู้ดูแลระบบ ")));
-			// 	userLog.setStatusBot(status.DEFAULT);
+			// lineBotController.push(userLog.getUserID(),
+			// Arrays.asList(new TextMessage("คุณได้ลงทะเบียนไปแล้วเรียบร้อย
+			// กรุณาติดต่อผู้ดูแลระบบ ")));
+			// userLog.setStatusBot(status.DEFAULT);
 			// } else {
-			// 	sql2 = new StringBuilder();
-			// 	sql2.append(" SELECT student_name ");
-			// 	sql2.append(" FROM TrainSQL.db_student  ");
-			// 	sql2.append(" WHERE student_id::VARCHAR = :studentId ");
+			// sql2 = new StringBuilder();
+			// sql2.append(" SELECT student_name ");
+			// sql2.append(" FROM TrainSQL.db_student ");
+			// sql2.append(" WHERE student_id::VARCHAR = :studentId ");
 
-			// 	final MapSqlParameterSource parameter2 = new MapSqlParameterSource();
-			// 	parameter2.addValue("studentId", studentId);
-			// 	student_name = (ArrayList<Map<String, Object>>) jdbcTemplate.queryForList(sql2.toString(), parameter2);
+			// final MapSqlParameterSource parameter2 = new MapSqlParameterSource();
+			// parameter2.addValue("studentId", studentId);
+			// student_name = (ArrayList<Map<String, Object>>)
+			// jdbcTemplate.queryForList(sql2.toString(), parameter2);
 
-			// 	final int size = student_name.size();
-			// 	if (size > 0) {
-			// 		final String detail = "ชื่อ " + student_name.get(0).get("student_name") + " ใช่หรือไม่";
-			// 		final ConfirmTemplate confirmTemplate = new ConfirmTemplate(detail, new MessageAction("ใช่", "ใช่"),
-			// 				new MessageAction("ไม่ใช่", "ไม่ใช่"));
-			// 		final TemplateMessage templateMessage = new TemplateMessage("ยืนยัน", confirmTemplate);
+			// final int size = student_name.size();
+			// if (size > 0) {
+			// final String detail = "ชื่อ " + student_name.get(0).get("student_name") + "
+			// ใช่หรือไม่";
+			// final ConfirmTemplate confirmTemplate = new ConfirmTemplate(detail, new
+			// MessageAction("ใช่", "ใช่"),
+			// new MessageAction("ไม่ใช่", "ไม่ใช่"));
+			// final TemplateMessage templateMessage = new TemplateMessage("ยืนยัน",
+			// confirmTemplate);
 
-			// 		lineBotController.push(userLog.getUserID(), Arrays.asList(templateMessage));
-			// 		userLog.setStatusBot(status.Comfrim);
+			// lineBotController.push(userLog.getUserID(), Arrays.asList(templateMessage));
+			// userLog.setStatusBot(status.Comfrim);
 
-			// 	} else {
-			// 		lineBotController.push(userLog.getUserID(),
-			// 				Arrays.asList(new TextMessage("ไม่มีรหัสนี้ในระบบ\n กรุณากดลงทะเบียนอีกครั้ง ")));
-			// 		userLog.setStatusBot(status.DEFAULT);
-			// 	}
+			// } else {
+			// lineBotController.push(userLog.getUserID(),
+			// Arrays.asList(new TextMessage("ไม่มีรหัสนี้ในระบบ\n กรุณากดลงทะเบียนอีกครั้ง
+			// ")));
+			// userLog.setStatusBot(status.DEFAULT);
+			// }
 			// }
 
 		} catch (final EmptyResultDataAccessException e) {

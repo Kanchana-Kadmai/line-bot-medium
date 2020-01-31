@@ -188,7 +188,6 @@ public class LineBotController {
 			}
 			default:
 				this.push(userLog.getUserID(), Arrays.asList(new TextMessage("ไม่เข้าใจคำสั่ง")));
-				userLog.setStatusBot(status.DEFAULT);
 			}
 		} else {
 			this.push(event.getSource().getSenderId(), Arrays.asList(new TextMessage("บอทหลับอยู่")));
