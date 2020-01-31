@@ -74,7 +74,7 @@ public class MyAccountService {
 
 			sql1 = new StringBuilder();
 			sql1.append(" SELECT line_id ");
-			sql1.append(" FROM db_student  ");
+			sql1.append(" FROM public.db_student  ");
 			sql1.append(" WHERE line_id::CHARACTER = :lineId ");
 
 			MapSqlParameterSource parameter1 = new MapSqlParameterSource();
@@ -88,9 +88,10 @@ public class MyAccountService {
 				userLog.setStatusBot(status.DEFAULT);
 			} else {
 				sql2 = new StringBuilder();
-				sql2.append(" SELECT student_name ");
-				sql2.append(" FROM db_student  ");
-				sql2.append(" WHERE student_id::CHARACTER = :studentId ");
+				sql2.append(" SELECT st.student_title || st.student_name || ' ' || rm.room_number as student_name");
+				sql2.append(" FROM db_student st ");
+				sql2.append(" JOIN db_room rm ON rm.room_id = st.room_id  ");
+				sql2.append(" WHERE st.student_id = :studentId ");
 
 				MapSqlParameterSource parameter2 = new MapSqlParameterSource();
 				parameter2.addValue("studentId", studentId);
@@ -98,7 +99,7 @@ public class MyAccountService {
 
 				int size = student_name.size();
 				if (size > 0) {
-					String detail = "ชื่อ " + student_name.get(0).get("student_name") + " ใช่หรือไม่";
+					String detail = "ชื่อ " + student_name.get(0).get("student_name") +" ใช่หรือไม่";
 					ConfirmTemplate confirmTemplate = new ConfirmTemplate(detail, new MessageAction("ใช่", "ใช่"),
 							new MessageAction("ไม่ใช่", "ไม่ใช่"));
 					TemplateMessage templateMessage = new TemplateMessage("ยืนยัน", confirmTemplate);
